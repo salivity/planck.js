@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Implement a Mouse Joint in Planck.js? - planck.js</title>
+    <meta name="description" content="This article provides a step-by-step guide on how to implement a Mouse Joint in planck.js, a 2D physics engine for JavaScript. You will learn how to set up the joint, update its target position based on user input (like mouse or touch movements), and pro">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-implement-a-mouse-joint-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Implement a Mouse Joint in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-implement-a-mouse-joint-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a step-by-step guide on how to implement a Mouse Joint in planck.js, a 2D physics engine for JavaScript. You will learn how to set up the joint, update its target position based on user input (like mouse or touch movements), and pro" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-implement-a-mouse-joint-in-planckjs">How to Implement a
+Mouse Joint in Planck.js?</h1>
+<p>This article provides a step-by-step guide on how to implement a
+Mouse Joint in planck.js, a 2D physics engine for JavaScript. You will
+learn how to set up the joint, update its target position based on user
+input (like mouse or touch movements), and properly destroy it when the
+interaction ends. By the end of this guide, you will be able to allow
+users to click and drag physics bodies smoothly within your
+simulation.</p>
+<h2 id="understanding-the-mouse-joint">Understanding the Mouse
+Joint</h2>
+<p>In planck.js (a rewrite of Box2D), a <code>MouseJoint</code> is used
+to manipulate a physics body using the cursor or a touch point. Instead
+of instantly teleporting an object to the mouse coordinates—which breaks
+physics laws and causes collisions to glitch—the Mouse Joint acts like a
+stiff spring. It applies forces to pull the target body toward the
+cursor's position while maintaining realistic physical interactions with
+other objects.</p>
+<h2 id="step-1-initial-setup-and-requirements">Step 1: Initial Setup and
+Requirements</h2>
+<p>To create a Mouse Joint, you need a reference to your planck.js
+<code>World</code> instance, a "ground" or dummy body (usually an empty
+static body), and the dynamic body that the user wants to drag.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// A static ground body is required as the first body for the joint</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> groundBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>()<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Variable to store the active joint</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> mouseJoint <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span></code></pre></div>
+<h2 id="step-2-creating-the-joint-on-mouse-down">Step 2: Creating the
+Joint on Mouse Down</h2>
+<p>When the user clicks or touches a physics body, you need to calculate
+the world coordinates of the click and initialize the
+<code>MouseJointDef</code>.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">onMouseDown</span>(mouseWorldX<span class="op">,</span> mouseWorldY<span class="op">,</span> targetBody) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (mouseJoint) <span class="cf">return</span><span class="op">;</span> <span class="co">// Already dragging something</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> jointDef <span class="op">=</span> {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bodyA</span><span class="op">:</span> groundBody<span class="op">,</span> <span class="co">// The static ground body</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">bodyB</span><span class="op">:</span> targetBody<span class="op">,</span>  <span class="co">// The dynamic body to drag</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">target</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Vec2</span>(mouseWorldX<span class="op">,</span> mouseWorldY)<span class="op">,</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="dt">maxForce</span><span class="op">:</span> <span class="fl">1000.0</span> <span class="op">*</span> targetBody<span class="op">.</span><span class="fu">getMass</span>()<span class="op">,</span> <span class="co">// Force scale based on mass</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="dt">frequencyHz</span><span class="op">:</span> <span class="fl">5.0</span><span class="op">,</span>                        <span class="co">// Oscillation frequency (stiffness)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    <span class="dt">dampingRatio</span><span class="op">:</span> <span class="fl">0.7</span>                        <span class="co">// Prevents endless bouncing</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  mouseJoint <span class="op">=</span> world<span class="op">.</span><span class="fu">createJoint</span>(planck<span class="op">.</span><span class="fu">MouseJoint</span>(jointDef))<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  targetBody<span class="op">.</span><span class="fu">setAwake</span>(<span class="kw">true</span>)<span class="op">;</span> <span class="co">// Ensure the body is active</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="step-3-updating-the-target-position-on-mouse-move">Step 3:
+Updating the Target Position on Mouse Move</h2>
+<p>As the user moves their cursor across the screen, you must
+continuously update the target vector of the Mouse Joint. This tells the
+physics engine where to pull the body next.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">onMouseMove</span>(mouseWorldX<span class="op">,</span> mouseWorldY) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (mouseJoint) {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Update the joint&#39;s target to the new cursor position</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    mouseJoint<span class="op">.</span><span class="fu">setTarget</span>(planck<span class="op">.</span><span class="fu">Vec2</span>(mouseWorldX<span class="op">,</span> mouseWorldY))<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="step-4-destroying-the-joint-on-mouse-up">Step 4: Destroying the
+Joint on Mouse Up</h2>
+<p>When the user releases the mouse button or lifts their finger, you
+must destroy the joint to release the object. If you omit this step, the
+object will remain tethered to that final coordinate indefinitely.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">onMouseUp</span>() {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (mouseJoint) {</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    world<span class="op">.</span><span class="fu">destroyJoint</span>(mouseJoint)<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    mouseJoint <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

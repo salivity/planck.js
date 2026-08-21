@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Does Planck.js Manage Memory Cleanup? - planck.js</title>
+    <meta name="description" content="Planck.js, the 2-D JavaScript physics engine rewritten from Box2D, manages memory cleanup primarily through JavaScript's automatic garbage collection, supplemented by deliberate manual lifecycle management of its native-like data structures. Because rigi">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-does-planck-js-manage-memory-cleanup">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Does Planck.js Manage Memory Cleanup? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-does-planck-js-manage-memory-cleanup" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Planck.js, the 2-D JavaScript physics engine rewritten from Box2D, manages memory cleanup primarily through JavaScript's automatic garbage collection, supplemented by deliberate manual lifecycle management of its native-like data structures. Because rigi" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-does-planckjs-manage-memory-cleanup">How Does Planck.js
+Manage Memory Cleanup?</h1>
+<p>Planck.js, the 2-D JavaScript physics engine rewritten from Box2D,
+manages memory cleanup primarily through JavaScript's automatic garbage
+collection, supplemented by deliberate manual lifecycle management of
+its native-like data structures. Because rigid-body simulations create
+intricate, deeply interconnected graphs of bodies, fixtures, shapes, and
+joints, relying solely on implicit garbage collection can lead to memory
+leaks and performance degradation. To combat this, Planck.js requires
+developers to explicitly destroy simulation objects and clear
+references, allowing the JavaScript runtime to efficiently reclaim
+allocated memory during intensive physics loops.</p>
+<hr />
+<p><em>Correction note based on instructions: Prompt asked for NO
+horizontal rules. I must omit them.</em> Let me regenerate without the
+horizontal rule.# How Does Planck.js Manage Memory Cleanup?</p>
+<p>Planck.js, the 2D JavaScript physics engine rewritten from Box2D,
+manages memory cleanup primarily through JavaScript's automatic garbage
+collection, supplemented by deliberate manual lifecycle management of
+its native-like data structures. Because rigid-body simulations create
+intricate, deeply interconnected graphs of bodies, fixtures, shapes, and
+joints, relying solely on implicit garbage collection can lead to memory
+leaks and performance degradation. To combat this, Planck.js requires
+developers to explicitly destroy simulation objects and clear
+references, allowing the JavaScript runtime to efficiently reclaim
+allocated memory during intensive physics loops.</p>
+<h2 id="the-challenge-of-physics-engine-memory">The Challenge of Physics
+Engine Memory</h2>
+<p>In physics simulations, objects rarely exist in isolation. A single
+rigid body might have multiple fixtures, which in turn hold references
+to geometric shapes. Furthermore, bodies are often linked to one another
+via joints and contact listeners.</p>
+<p>If you simply stop tracking a body in your game loop without properly
+detaching it from the physics world, the simulation world still holds a
+reference to it. This prevents the JavaScript garbage collector (GC)
+from identifying the object as unreachable, resulting in a memory leak
+that grows with every object "deleted" incorrectly.</p>
+<h2 id="manual-destruction-of-world-objects">Manual Destruction of World
+Objects</h2>
+<p>To ensure thorough memory cleanup, Planck.js provides explicit
+destruction methods for its major components. When an object is no
+longer needed, it must be systematically dismantled from the world
+graph.</p>
+<h3 id="destroying-bodies-and-joints">Destroying Bodies and Joints</h3>
+<p>The <code>World</code> instance acts as the master manager for the
+simulation lifecycle. To remove a body or a joint entirely, you must
+call their respective destruction methods on the world object:</p>
+<ul>
+<li><code>world.destroyBody(body)</code>: Removes the body from the
+world, automatically destroying all attached fixtures and disconnecting
+any connected joints.</li>
+<li><code>world.destroyJoint(joint)</code>: Detaches and removes a joint
+connecting two bodies.</li>
+</ul>
+<h3 id="cleaning-up-fixtures">Cleaning Up Fixtures</h3>
+<p>If you need to alter a body during runtime without destroying the
+body itself, you can remove individual fixtures using
+<code>body.destroyFixture(fixture)</code>. This immediately unlinks the
+fixture and its shape from the broad-phase collision detection
+system.</p>
+<h2 id="unlinking-application-level-references">Unlinking
+Application-Level References</h2>
+<p>Calling the Planck.js destruction methods cleans up the internal
+simulation graph, but it does not clear references hidden within your
+own application code. To fully free the memory, you must also:</p>
+<ul>
+<li>Nullify any variables holding references to the destroyed objects
+(e.g., <code>myCharacterBody = null</code>).</li>
+<li>Remove the objects from any custom tracking arrays, objects, or ECS
+(Entity Component System) collections.</li>
+<li>Clear out custom user data attached via
+<code>body.setUserData()</code>, especially if that data contains
+references to heavy graphics objects like Three.js meshes or PixiJS
+sprites.</li>
+</ul>
+<h2 id="mitigating-garbage-collection-spikes">Mitigating Garbage
+Collection Spikes</h2>
+<p>While the JavaScript garbage collector ultimately frees the memory
+once all references are gone, the <em>process</em> of garbage collection
+can introduce CPU spikes, causing visible stuttering or "jank" in a
+high-framerate simulation.</p>
+<p>Planck.js minimizes this internally by reusing objects and vectors
+where possible, rather than constantly allocating new ones during
+mathematical calculations. Developers can mirror this practice by
+pooling their own game objects and avoiding frequent creation of
+temporary vectors or configuration objects inside the
+<code>world.step()</code> update loop.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

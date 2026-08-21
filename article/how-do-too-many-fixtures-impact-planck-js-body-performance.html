@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How Do Too Many Fixtures Impact planck.js Body Performance? - planck.js</title>
+    <meta name="description" content="In planck.js (the JavaScript rewriting of the Box2D physics engine), attaching an excessive number of fixtures to a single rigid body can severely degrade simulation performance. While grouping multiple shapes onto one body is a common technique for crea">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-do-too-many-fixtures-impact-planck-js-body-performance">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How Do Too Many Fixtures Impact planck.js Body Performance? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-do-too-many-fixtures-impact-planck-js-body-performance" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In planck.js (the JavaScript rewriting of the Box2D physics engine), attaching an excessive number of fixtures to a single rigid body can severely degrade simulation performance. While grouping multiple shapes onto one body is a common technique for crea" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-do-too-many-fixtures-impact-planckjs-body-performance">How
+Do Too Many Fixtures Impact planck.js Body Performance?</h1>
+<p>In <strong>planck.js</strong> (the JavaScript rewriting of the Box2D
+physics engine), attaching an excessive number of fixtures to a single
+rigid body can severely degrade simulation performance. While grouping
+multiple shapes onto one body is a common technique for creating complex
+composite structures, it introduces significant overhead in collision
+detection and internal data management. This article breaks down the
+performance implications of high fixture counts, explores why the engine
+slows down, and provides practical optimization strategies to keep your
+physics simulation running smoothly at 60 FPS.</p>
+<h2 id="the-cost-of-collision-detection">The Cost of Collision
+Detection</h2>
+<p>The primary performance bottleneck of having too many fixtures on a
+single body lies in the <strong>Narrow-Phase collision
+detection</strong>. The physics engine handles collisions in two main
+stages:</p>
+<ul>
+<li><strong>Broad-Phase:</strong> The engine uses a dynamic AABB
+(Axis-Aligned Bounding Box) tree to quickly identify which
+<em>bodies</em> are near each other.</li>
+<li><strong>Narrow-Phase:</strong> Once two bodies are flagged as
+potentially colliding, the engine must iterate through the individual
+<em>fixtures</em> of those bodies to check for actual structural
+intersections.</li>
+</ul>
+<p>When a body has dozens or hundreds of fixtures, the narrow-phase must
+perform exhaustive checks against them. Even if the body is completely
+static, any dynamic body entering its bounding box will trigger a
+massive spike in collision calculations, as the engine tests the moving
+body against every single fixture in the composite structure.</p>
+<h2 id="increased-memory-and-traversal-overhead">Increased Memory and
+Traversal Overhead</h2>
+<p>Every fixture added to a body increases the complexity of the body's
+internal linked list. When the engine updates the mass properties,
+applies forces, or transforms the positions of a body, it must traverse
+these structures.</p>
+<p>Furthermore, a high fixture count complicates <strong>Contact
+Generation</strong>. For every pair of overlapping fixtures, a contact
+object is created and tracked. If a single complex body settles into a
+pile of other objects, the sheer volume of active contacts can overwhelm
+the constraint solver, leading to frame drops and sluggish physics
+steps.</p>
+<h2 id="when-does-it-become-a-problem">When Does It Become a
+Problem?</h2>
+<p>The exact threshold depends on the complexity of the shapes and your
+target hardware, but general performance trends follow these lines:</p>
+<table>
+<thead>
+<tr>
+<th>Fixture Count per Body</th>
+<th>Performance Impact</th>
+<th>Typical Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1 – 5</strong></td>
+<td>Negligible / Optimal</td>
+<td>Standard game entities, basic characters, simple obstacles.</td>
+</tr>
+<tr>
+<td><strong>6 – 20</strong></td>
+<td>Moderate</td>
+<td>Moderate composite shapes (e.g., a detailed vehicle or terrain
+chunk).</td>
+</tr>
+<tr>
+<td><strong>20+</strong></td>
+<td>High</td>
+<td>Highly complex geometry. Optimization is usually required here.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note:</strong> Complex shapes like chains and polygons with
+maximum vertices are significantly more expensive to process during
+narrow-phase checks than simple circles or boxes.</p>
+</blockquote>
+<h2 id="strategies-to-optimize-high-fixture-counts">Strategies to
+Optimize High Fixture Counts</h2>
+<p>If your project requires intricate geometry, you can mitigate the
+performance hit using several design patterns:</p>
+<h3 id="1-simplify-with-coarser-approximations">1. Simplify with Coarser
+Approximations</h3>
+<p>Often, exact visual matches are unnecessary for physics. Replace a
+cluster of tiny fixtures with a single, larger bounding box or circle
+fixture that approximates the same volume.</p>
+<h3 id="2-utilize-chain-shapes-for-terrain">2. Utilize Chain Shapes for
+Terrain</h3>
+<p>If you are attaching numerous edge fixtures to a single body to
+create a smooth terrain or map, switch to a single <strong>Chain
+Shape</strong> (<code>planck.Chain</code>). Chain shapes are explicitly
+optimized to handle connected line segments efficiently without the
+overhead of independent fixtures.</p>
+<h3 id="3-implement-multi-body-decomposition">3. Implement Multi-Body
+Decomposition</h3>
+<p>Instead of overloading a single body, break the object down into
+multiple separate bodies connected by <strong>Welded Joints</strong> or
+grouped logically via collision filtering. This allows the broad-phase
+AABB tree to do its job effectively, pruning out distant parts of the
+object from narrow-phase calculations.</p>
+<h3 id="4-optimize-collision-filtering">4. Optimize Collision
+Filtering</h3>
+<p>Use <code>fixture.setFilterData()</code> to aggressively disable
+collision checks between fixtures that never need to interact. By
+leveraging categories and mask bits, you prevent the narrow-phase from
+wasting CPU cycles on irrelevant fixture pairings.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

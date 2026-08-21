@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How does planck.js handle continuous collision detection? - planck.js</title>
+    <meta name="description" content="Planck.js, a 2D rigid-body physics engine written in pure JavaScript, prevents fast-moving objects from tunneling through geometry by implementing a specialized Continuous Collision Detection (CCD) system based on the original C++ Box2D architecture. In">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-does-planck-js-handle-continuous-collision-detection">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How does planck.js handle continuous collision detection? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-does-planck-js-handle-continuous-collision-detection" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Planck.js, a 2D rigid-body physics engine written in pure JavaScript, prevents fast-moving objects from tunneling through geometry by implementing a specialized Continuous Collision Detection (CCD) system based on the original C++ Box2D architecture. In" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-does-planckjs-handle-continuous-collision-detection">How
+does planck.js handle continuous collision detection?</h1>
+<p>Planck.js, a 2D rigid-body physics engine written in pure JavaScript,
+prevents fast-moving objects from tunneling through geometry by
+implementing a specialized Continuous Collision Detection (CCD) system
+based on the original C++ Box2D architecture. In standard discrete
+physics simulations, objects move in discrete intervals, which can cause
+high-velocity bodies to completely bypass obstacles between frames.
+Planck.js solves this by calculating the precise trajectory over time,
+identifying separating axes, and applying a multi-step time-of-impact
+(TOI) sub-stepping solver that stops and processes collisions exactly
+when they occur.</p>
+<h3 id="the-problem-of-tunneling-in-discrete-stepping">The Problem of
+Tunneling in Discrete Stepping</h3>
+<p>In a standard discrete simulation, a physics engine advances time by
+fixed steps (<span class="math inline">\(\Delta t\)</span>). It updates
+positions based on velocity and checks for overlaps only at those
+specific instants. If an object is small or traveling at an
+exceptionally high velocity, its displacement during a single <span
+class="math inline">\(\Delta t\)</span> can exceed its own thickness or
+the thickness of the target geometry. As a result, the object is on one
+side of a wall in frame A and entirely on the other side in frame B.
+Discrete collision detection fails to see an overlap, allowing the
+object to "tunnel" through solid walls.</p>
+<h3 id="time-of-impact-toi-calculations-and-sweeps">Time of Impact (TOI)
+Calculations and Sweeps</h3>
+<p>To prevent tunneling, planck.js employs a dedicated
+<code>TimeOfImpact</code> function that evaluates the movement of shapes
+continuously over a time step.</p>
+<ul>
+<li><strong>The Sweep Structure:</strong> Instead of looking at static
+final positions, the engine uses a <code>Sweep</code> structure. This
+structure encapsulates both the initial and final transforms
+(translation and rotation) of the two interacting shapes over the
+duration of the step.</li>
+<li><strong>Separating Axis Linearization:</strong> The
+<code>TimeOfImpact</code> algorithm utilizes a distance function to
+establish an initial separating axis between two moving shapes. It
+monitors the shapes along this axis as they advance through time. If the
+shapes cross on that axis, a collision is flagged.</li>
+<li><strong>Rotational Limitations:</strong> While this linear
+projection is highly efficient, extreme rotations within a single time
+step can occasionally cause glancing, purely rotational collisions to be
+missed. However, translational tunneling—the primary cause of
+game-breaking glitches—is entirely blocked.</li>
+</ul>
+<h3 id="the-sub-stepping-solver-and-motion-clamping">The Sub-Stepping
+Solver and Motion Clamping</h3>
+<p>Once a valid collision path is identified, planck.js transitions the
+simulation into a specialized sub-stepping routine rather than relying
+entirely on its broad-phase and narrow-phase discrete solvers.</p>
+<ol type="1">
+<li><strong>Finding the First TOI:</strong> The engine evaluates pairs
+of potentially colliding objects and ranks them based on which pair will
+collide earliest in the current time step.</li>
+<li><strong>Motion Clamping:</strong> The physics solver advances the
+global simulation time only up to that specific, fractional "Time of
+Impact" (<span class="math inline">\(t_{\text{impact}}\)</span> where
+<span class="math inline">\(0 &lt; t_{\text{impact}} \le \Delta
+t\)</span>). The fast-moving object is physically "clamped" at its exact
+point of contact.</li>
+<li><strong>Collision Resolution:</strong> At this precise sub-step, a
+localized contact manifold is generated, and the contact solver
+immediately processes the physical reaction (such as friction,
+restitution, or impulses).</li>
+<li><strong>Advancing the Remainder:</strong> After resolving the event,
+the engine uses the remaining fraction of the time step (<span
+class="math inline">\(\Delta t - t_{\text{impact}}\)</span>) to continue
+simulated movement for the rest of the world.</li>
+</ol>
+<h3 id="implementing-ccd-in-code">Implementing CCD in Code</h3>
+<p>By default, planck.js uses discrete collision detection to optimize
+performance, as continuous calculations are computationally heavy. To
+activate continuous collision detection for critical, high-velocity
+bodies (such as bullets or fast-moving characters), developers must
+explicitly flag the rigid body as a bullet.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Create a fast-moving dynamic body</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">let</span> bulletBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>({</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;dynamic&#39;</span><span class="op">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">position</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bullet</span><span class="op">:</span> <span class="kw">true</span> <span class="co">// Enforces Continuous Collision Detection (CCD)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<p>Setting <code>bullet: true</code> instructs the system to run the TOI
+sweep algorithms against all static geometry and other designated
+dynamic obstacles, ensuring that high-velocity interactions remain
+perfectly enclosed within the boundaries of the physics world.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

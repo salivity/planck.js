@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use Planck.js with HTML5 Canvas? - planck.js</title>
+    <meta name="description" content="Planck.js is a 2D physics engine for JavaScript that allows developers to simulate realistic physics in the browser. While it handles all the complex mathematics behind movement, collisions, and forces, it does not include a built-in renderer. To bring y">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-use-planck-js-with-html5-canvas">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Use Planck.js with HTML5 Canvas? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-use-planck-js-with-html5-canvas" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Planck.js is a 2D physics engine for JavaScript that allows developers to simulate realistic physics in the browser. While it handles all the complex mathematics behind movement, collisions, and forces, it does not include a built-in renderer. To bring y" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-use-planckjs-with-html5-canvas">How to Use Planck.js with
+HTML5 Canvas?</h1>
+<p>Planck.js is a 2D physics engine for JavaScript that allows
+developers to simulate realistic physics in the browser. While it
+handles all the complex mathematics behind movement, collisions, and
+forces, it does not include a built-in renderer. To bring your physics
+simulation to life, you must pair it with a visual tool like the HTML5
+Canvas API. This article provides a step-by-step guide on how to
+configure a Planck.js world, map its physical coordinates to visual
+canvas pixels, and create a continuous render loop to display moving
+bodies.</p>
+<h2 id="setting-up-the-physics-world">Setting Up the Physics World</h2>
+<p>To get started, you need to instantiate a Planck.js world and
+populate it with rigid bodies. In Planck.js, coordinates are typically
+measured in meters, kilograms, and seconds (MKS), which keeps the
+physics calculations stable and realistic.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Import or access planck</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> pl <span class="op">=</span> planck<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Create a world with downward gravity (e.g., 10 m/s²)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> world <span class="op">=</span> pl<span class="op">.</span><span class="fu">World</span>({</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">gravity</span><span class="op">:</span> pl<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">10</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">// Create a dynamic body (a falling box)</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> body <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>({</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;dynamic&#39;</span><span class="op">,</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">position</span><span class="op">:</span> pl<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">// Give the body a box shape (width: 2 meters, height: 2 meters)</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>body<span class="op">.</span><span class="fu">createFixture</span>(pl<span class="op">.</span><span class="fu">Box</span>(<span class="dv">1</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">,</span> {</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">density</span><span class="op">:</span> <span class="fl">1.0</span><span class="op">,</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">friction</span><span class="op">:</span> <span class="fl">0.3</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h2 id="the-coordinate-mapping-problem">The Coordinate Mapping
+Problem</h2>
+<p>HTML5 Canvas uses a coordinate system where the origin <span
+class="math inline">\((0,0)\)</span> sits at the top-left corner, and
+the y-axis increases as you move downward. Conversely, a typical physics
+environment uses a standard Cartesian coordinate system where the y-axis
+increases as you move upward.</p>
+<p>Because physics engines work best with small numbers (e.g., a human
+character being 2 meters tall rather than 200 pixels tall), you must
+establish a scale factor to translate meters to pixels. A common ratio
+is 30 pixels per meter.</p>
+<p>When drawing, you will need to:</p>
+<ul>
+<li>Multiply the physics positions by your scale factor.</li>
+<li>Invert the Y-axis so that physics objects falling "down" move
+downward on your screen.</li>
+<li>Translate the origin to the center or bottom of your canvas if
+desired.</li>
+</ul>
+<h2 id="implementing-the-render-loop">Implementing the Render Loop</h2>
+<p>To see the simulation, you must update the physics world and redraw
+the canvas on every frame. This is achieved using
+<code>requestAnimationFrame</code>. During each frame, the canvas is
+cleared, the physics world advances by a time step, and the current
+position and angle of every body are used to draw shapes.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> canvas <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">getElementById</span>(<span class="st">&#39;simCanvas&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> ctx <span class="op">=</span> canvas<span class="op">.</span><span class="fu">getContext</span>(<span class="st">&#39;2d&#39;</span>)<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> SCALE <span class="op">=</span> <span class="dv">30</span><span class="op">;</span> <span class="co">// 30 pixels = 1 meter</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">draw</span>() {</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 1. Clear the canvas for the new frame</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  ctx<span class="op">.</span><span class="fu">clearRect</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span><span class="op">,</span> canvas<span class="op">.</span><span class="at">width</span><span class="op">,</span> canvas<span class="op">.</span><span class="at">height</span>)<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 2. Advance the physics world (60 frames per second time step)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  world<span class="op">.</span><span class="fu">step</span>(<span class="dv">1</span> <span class="op">/</span> <span class="dv">60</span>)<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="co">// 3. Iterate through all bodies and draw them</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">let</span> b <span class="op">=</span> world<span class="op">.</span><span class="fu">getBodyList</span>()<span class="op">;</span> b<span class="op">;</span> b <span class="op">=</span> b<span class="op">.</span><span class="fu">getNext</span>()) {</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> pos <span class="op">=</span> b<span class="op">.</span><span class="fu">getPosition</span>()<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> angle <span class="op">=</span> b<span class="op">.</span><span class="fu">getAngle</span>()<span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Save context state to handle individual object transformations</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">save</span>()<span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Translate canvas origin to the center of the canvas and scale coordinates</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">translate</span>(canvas<span class="op">.</span><span class="at">width</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">+</span> pos<span class="op">.</span><span class="at">x</span> <span class="op">*</span> SCALE<span class="op">,</span> canvas<span class="op">.</span><span class="at">height</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">-</span> pos<span class="op">.</span><span class="at">y</span> <span class="op">*</span> SCALE)<span class="op">;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">rotate</span>(<span class="op">-</span>angle)<span class="op">;</span> <span class="co">// Invert rotation due to the inverted Y-axis</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Draw the body shape (assuming a box fixture for simplicity)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="at">fillStyle</span> <span class="op">=</span> <span class="st">&#39;#3498db&#39;</span><span class="op">;</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">fillRect</span>(<span class="op">-</span><span class="dv">30</span><span class="op">,</span> <span class="op">-</span><span class="dv">30</span><span class="op">,</span> <span class="dv">60</span><span class="op">,</span> <span class="dv">60</span>)<span class="op">;</span> <span class="co">// 2x2 meters becomes 60x60 pixels</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    ctx<span class="op">.</span><span class="fu">restore</span>()<span class="op">;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Loop the animation</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">requestAnimationFrame</span>(draw)<span class="op">;</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">// Start the loop</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">requestAnimationFrame</span>(draw)<span class="op">;</span></span></code></pre></div>
+<h2 id="optimizing-for-complex-shapes">Optimizing for Complex
+Shapes</h2>
+<p>While the example above uses a hardcoded rectangle, a
+production-ready canvas renderer should dynamically inspect the fixtures
+of a body. By checking whether a fixture is a <code>Circle</code> or a
+<code>Polygon</code>, you can read the local vertices provided by
+Planck.js, scale them, and use standard canvas path methods like
+<code>ctx.arc()</code> or <code>ctx.lineTo()</code> to draw accurate
+shapes regardless of their geometry.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Object Pool planck.js Bodies? - planck.js</title>
+    <meta name="description" content="Object pooling in planck.js—a 2D JavaScript physics engine based on Box2D—is a crucial optimization technique for maintaining a stable frame rate in physics-heavy games or simulations. Constantly creating and destroying rigid bodies triggers frequent">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-object-pool-planck-js-bodies">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Object Pool planck.js Bodies? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-object-pool-planck-js-bodies" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Object pooling in planck.js—a 2D JavaScript physics engine based on Box2D—is a crucial optimization technique for maintaining a stable frame rate in physics-heavy games or simulations. Constantly creating and destroying rigid bodies triggers frequent" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-object-pool-planckjs-bodies">How to Object Pool planck.js
+Bodies?</h1>
+<p>Object pooling in planck.js—a 2D JavaScript physics engine based on
+Box2D—is a crucial optimization technique for maintaining a stable frame
+rate in physics-heavy games or simulations. Constantly creating and
+destroying rigid bodies triggers frequent garbage collection spikes,
+leading to noticeable frame drops. By reusing a fixed set of bodies
+instead of destroying them, you can keep memory allocation flat. This
+article covers the essential steps to implement an efficient object pool
+for planck.js bodies, including spawning, recycling, and properly
+resetting a body's state.</p>
+<h2 id="why-pool-physics-bodies">Why Pool Physics Bodies?</h2>
+<p>In standard JavaScript development, creating a new object is
+relatively cheap. However, in a physics engine like planck.js, a
+<code>World.createBody()</code> call does heavy lifting behind the
+scenes. It allocates memory for the body, its transform states, velocity
+vectors, and attached fixtures.</p>
+<p>If you are building a game like a bullet hell or an endless runner
+where hundreds of projectiles or obstacles appear and disappear every
+second, standard destruction will quickly bottleneck your
+application.</p>
+<blockquote>
+<p><strong>The Garbage Collection Trap:</strong> When you call
+<code>world.destroyBody(body)</code>, you don't instantly free memory;
+you just remove the reference. The JavaScript Garbage Collector (GC)
+will eventually run to clean up those objects, causing micro-stutters
+during gameplay.</p>
+</blockquote>
+<h2 id="step-1-initializing-the-object-pool">Step 1: Initializing the
+Object Pool</h2>
+<p>An object pool is essentially an array or a list that holds
+pre-allocated objects. When you initialize your game scene, you should
+create the maximum number of bodies you expect to need at any given
+time.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> BodyPool {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">constructor</span>(world<span class="op">,</span> poolSize) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">world</span> <span class="op">=</span> world<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">this</span><span class="op">.</span><span class="at">inactiveBodies</span> <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Pre-allocate bodies</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">let</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> poolSize<span class="op">;</span> i<span class="op">++</span>) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Create a generic dynamic body at world origin</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> body <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">world</span><span class="op">.</span><span class="fu">createBody</span>({</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;dynamic&#39;</span><span class="op">,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="dt">position</span><span class="op">:</span> pl<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Attach a default fixture (e.g., a small circle)</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      body<span class="op">.</span><span class="fu">createFixture</span>(pl<span class="op">.</span><span class="fu">Circle</span>(<span class="fl">0.5</span>)<span class="op">,</span> {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        <span class="dt">density</span><span class="op">:</span> <span class="fl">1.0</span><span class="op">,</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        <span class="dt">friction</span><span class="op">:</span> <span class="fl">0.3</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>      })<span class="op">;</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Deactivate it immediately so it doesn&#39;t interact with the world</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      body<span class="op">.</span><span class="fu">setActive</span>(<span class="kw">false</span>)<span class="op">;</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>      <span class="kw">this</span><span class="op">.</span><span class="at">inactiveBodies</span><span class="op">.</span><span class="fu">push</span>(body)<span class="op">;</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="step-2-spawning-and-activating-a-body">Step 2: Spawning and
+Activating a Body</h2>
+<p>When you need a new object in your game, instead of calling
+<code>world.createBody()</code>, you request one from your pool. You
+must activate the body and set its new position and velocity before it
+rejoins the physics simulation.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">get</span>(position<span class="op">,</span> linearVelocity) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="kw">this</span><span class="op">.</span><span class="at">inactiveBodies</span><span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Optional: Expand the pool dynamically if it runs out</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">null</span><span class="op">;</span> </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> body <span class="op">=</span> <span class="kw">this</span><span class="op">.</span><span class="at">inactiveBodies</span><span class="op">.</span><span class="fu">pop</span>()<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Teleport the body to the starting position</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setPosition</span>(position)<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setLinearVelocity</span>(linearVelocity)<span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setAngularVelocity</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wake up the body and make it active</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setActive</span>(<span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setAwake</span>(<span class="kw">true</span>)<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> body<span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="step-3-properly-resetting-and-recycling-bodies">Step 3: Properly
+Resetting and Recycling Bodies</h2>
+<p>The most critical part of object pooling in planck.js is cleaning the
+slate when a body goes off-screen or gets destroyed. If you don't
+completely reset the physical properties, the reused body will carry
+over residual forces, velocities, and contact states, causing
+unpredictable physics glitches.</p>
+<p>To safely recycle a body back into the pool, use the following
+checklist:</p>
+<ul>
+<li><strong>Set Active to False:</strong> This removes the body from the
+collision detection phase and stops it from interacting with other
+shapes.</li>
+<li><strong>Zero Out Velocities:</strong> Wipe both linear and angular
+velocities so the object starts completely still next time.</li>
+<li><strong>Clear Forces:</strong> Clear any accumulated forces and
+torques that haven't been integrated yet.</li>
+<li><strong>Reset Mass Properties:</strong> If your pool reuses bodies
+with varying fixtures, ensure you call <code>body.resetMassData()</code>
+if shapes change.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">recycle</span>(body) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Deactivate physics interactions</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setActive</span>(<span class="kw">false</span>)<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Wipe out physical momentum</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setLinearVelocity</span>(pl<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setAngularVelocity</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Clear any pending force accumulations</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setForce</span>(pl<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>  body<span class="op">.</span><span class="fu">setTorque</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Return to the pool array</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="kw">this</span><span class="op">.</span><span class="at">inactiveBodies</span><span class="op">.</span><span class="fu">push</span>(body)<span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h2 id="handling-contacts-and-collisions-during-pooling">Handling
+Contacts and Collisions During Pooling</h2>
+<p>When you deactivate a body using <code>body.setActive(false)</code>,
+planck.js automatically destroys any active contacts touching that body.
+However, if you are caching data inside the user data property
+(<code>body.setUserData()</code>), make sure to clear or update that
+reference when recycling. If your game relies on contact listeners,
+always check <code>body.isActive()</code> within your
+<code>beginContact</code> loops to ensure you are not processing logic
+for a body that was just returned to the pool during the same physics
+step.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

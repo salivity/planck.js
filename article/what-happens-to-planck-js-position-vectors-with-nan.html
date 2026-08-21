@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What happens to planck.js position vectors with NaN? - planck.js</title>
+    <meta name="description" content="Feeding NaN (Not-a-Number) values into a planck.js position vector breaks the underlying physics simulation, causing computational failures, invisible or disappearing bodies, and cascading errors across the physics world. This article explores how planck">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/what-happens-to-planck-js-position-vectors-with-nan">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What happens to planck.js position vectors with NaN? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/what-happens-to-planck-js-position-vectors-with-nan" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Feeding NaN (Not-a-Number) values into a planck.js position vector breaks the underlying physics simulation, causing computational failures, invisible or disappearing bodies, and cascading errors across the physics world. This article explores how planck" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="what-happens-to-planckjs-position-vectors-with-nan">What happens
+to planck.js position vectors with NaN?</h1>
+<p>Feeding <code>NaN</code> (Not-a-Number) values into a planck.js
+position vector breaks the underlying physics simulation, causing
+computational failures, invisible or disappearing bodies, and cascading
+errors across the physics world. This article explores how planck.js
+handles <code>NaN</code> inputs, why it leads to silent failures, and
+how you can prevent it from ruining your 2D physics simulations.</p>
+<h3 id="how-planckjs-reacts-to-nan-values">How planck.js Reacts to NaN
+Values</h3>
+<p>Planck.js is a JavaScript port of the Box2D physics engine. It relies
+heavily on continuous mathematical calculations for linear algebra,
+collision detection, and constraint solving. When a <code>NaN</code>
+value is introduced into a position vector (such as
+<code>Vec2(NaN, 5)</code> or via <code>body.setPosition()</code>), the
+engine does not typically throw an immediate runtime error. Instead, it
+fails silently and propagates through the system.</p>
+<ul>
+<li><strong>Cascading Failures:</strong> In JavaScript, any mathematical
+operation involving <code>NaN</code> results in <code>NaN</code> (e.g.,
+<span class="math inline">\(5 + \text{NaN} = \text{NaN}\)</span>). Once
+a position vector contains <code>NaN</code>, every subsequent velocity,
+acceleration, and distance calculation involving that body also becomes
+<code>NaN</code>.</li>
+<li><strong>The "Disappearing Body" Phenomenon:</strong> When the
+collision detection system processes a <code>NaN</code> position, the
+bounding box (AABB) calculation fails. As a result, the body will
+instantly vanish from the rendered screen and stop colliding with any
+other objects in the world.</li>
+<li><strong>Broad-phase Pollution:</strong> In severe cases, the
+<code>NaN</code> value can corrupt the engine's dynamic tree (the
+structure used to optimize collision checks). This can cause the entire
+physics simulation to freeze or behave erratically, affecting otherwise
+healthy bodies.</li>
+</ul>
+<h3 id="common-causes-of-nan-in-physics-vectors">Common Causes of NaN in
+Physics Vectors</h3>
+<p><code>NaN</code> values rarely appear out of nowhere; they are
+usually the result of upstream coding logic flaws before the data is
+passed to planck.js.</p>
+<ul>
+<li><strong>Division by Zero:</strong> Calculating a trajectory or
+normalizing a vector with a length of zero (e.g., trying to find the
+direction between two objects that are exactly on top of each
+other).</li>
+<li><strong>Undefined Variables:</strong> Accidentally passing an
+uninitialized variable or a typo in a property name into the
+<code>Vec2</code> constructor.</li>
+<li><strong>Invalid Math Operations:</strong> Performing operations like
+<code>Math.sqrt(-1)</code> or parsing a corrupted state string via
+<code>parseFloat()</code> before applying the result to a physics
+body.</li>
+</ul>
+<h3 id="how-to-prevent-and-debug-nan-errors">How to Prevent and Debug
+NaN Errors</h3>
+<p>Because planck.js fails silently, debugging <code>NaN</code> issues
+can be incredibly frustrating. The best defense is proactive
+validation.</p>
+<ul>
+<li><strong>Sanitize Inputs:</strong> Always validate external forces,
+user inputs, or complex math results before updating a planck.js vector.
+You can use JavaScript's built-in <code>Number.isNaN()</code>
+function.</li>
+<li><strong>Implement a Vector Guard:</strong> Create a helper utility
+to safely generate planck.js vectors, fallback to a safe default if
+<code>NaN</code> is detected, or throw an explicit error early so you
+can trace the exact line of code causing the bug.</li>
+</ul>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">createSafeVec2</span>(x<span class="op">,</span> y) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="bu">Number</span><span class="op">.</span><span class="fu">isNaN</span>(x) <span class="op">||</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isNaN</span>(y)) {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">error</span>(<span class="st">&quot;Warning: NaN detected in vector initialization!&quot;</span>)<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">;</span> <span class="co">// Safe fallback</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> planck<span class="op">.</span><span class="fu">Vec2</span>(x<span class="op">,</span> y)<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

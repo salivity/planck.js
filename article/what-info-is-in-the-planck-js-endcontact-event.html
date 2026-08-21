@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Info is in the planck.js EndContact Event? - planck.js</title>
+    <meta name="description" content="In planck.js—a 2D physics engine for JavaScript games and simulations—the EndContact event is triggered immediately after two fixtures stop touching. This article provides a quick breakdown of the specific information you can extract from this event,">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/what-info-is-in-the-planck-js-endcontact-event">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Info is in the planck.js EndContact Event? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/what-info-is-in-the-planck-js-endcontact-event" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="In planck.js—a 2D physics engine for JavaScript games and simulations—the EndContact event is triggered immediately after two fixtures stop touching. This article provides a quick breakdown of the specific information you can extract from this event," />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="what-info-is-in-the-planckjs-endcontact-event">What Info is in
+the planck.js EndContact Event?</h1>
+<p>In planck.js—a 2D physics engine for JavaScript games and
+simulations—the <code>EndContact</code> event is triggered immediately
+after two fixtures stop touching. This article provides a quick
+breakdown of the specific information you can extract from this event,
+including access to the underlying <code>Contact</code> object, the
+colliding fixtures, the parent bodies, and why contact state data like
+manifolds are no longer available at this stage of the collision
+lifecycle.</p>
+<h3 id="accessing-the-contact-object">Accessing the Contact Object</h3>
+<p>When the <code>EndContact</code> event fires, the listener receives a
+<code>Contact</code> object as its primary argument. This object is the
+gateway to understanding which elements in your physics world have just
+separated.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>world<span class="op">.</span><span class="fu">on</span>(<span class="st">&#39;end-contact&#39;</span><span class="op">,</span> <span class="kw">function</span>(contact) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Your extraction code here</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h3 id="key-data-extracted-from-the-event">Key Data Extracted from the
+Event</h3>
+<ul>
+<li><strong>The Fixtures (<code>getFixtureA()</code> and
+<code>getFixtureB()</code>):</strong> You can determine exactly which
+parts of your shapes broke contact. This is crucial if a single rigid
+body has multiple fixtures (e.g., a character body fixture and a
+separate sensor fixture for detecting ground contact).</li>
+<li><strong>The Bodies (<code>getBody()</code>):</strong> By calling
+<code>contact.getFixtureA().getBody()</code> and
+<code>contact.getFixtureB().getBody()</code>, you can access the parent
+<code>Body</code> objects. This allows you to update game logic, such as
+switching a character's state from "grounded" to "jumping/falling" the
+moment they leave a platform.</li>
+<li><strong>User Data (<code>getUserData()</code>):</strong> If you
+attached custom game properties, IDs, or labels to your fixtures or
+bodies during creation, you can retrieve them here to identify what game
+entities just separated.</li>
+</ul>
+<h3 id="limitations-what-you-cannot-extract">Limitations: What You
+Cannot Extract</h3>
+<p>It is equally important to know what information is <em>not</em>
+reliable during an <code>EndContact</code> event. Because the shapes are
+no longer intersecting, the engine clears the geometric collision
+data.</p>
+<ul>
+<li><strong>No Contact Manifolds:</strong> Methods like
+<code>contact.getManifold()</code> will not yield useful geometric data
+because the contact points no longer exist.</li>
+<li><strong>No Impulse or Normal Vectors:</strong> If you need to know
+the final direction or force of the separation, you cannot get it from
+<code>EndContact</code>. That data must be captured during the preceding
+<code>PostSolve</code> or <code>PreSolve</code> steps while the objects
+are still touching.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

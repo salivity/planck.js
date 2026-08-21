@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Can Planck.js Run on Node.js for Multiplayer Physics? - planck.js</title>
+    <meta name="description" content="This article explores whether Planck.js can be executed on a Node.js server to handle authoritative multiplayer physics. We will break down how Planck.js functions in a server-side environment, examine the architecture required for a server-authoritative">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/can-planck-js-run-on-node-js-for-multiplayer-physics">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Can Planck.js Run on Node.js for Multiplayer Physics? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/can-planck-js-run-on-node-js-for-multiplayer-physics" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article explores whether Planck.js can be executed on a Node.js server to handle authoritative multiplayer physics. We will break down how Planck.js functions in a server-side environment, examine the architecture required for a server-authoritative" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="can-planckjs-run-on-nodejs-for-multiplayer-physics">Can
+Planck.js Run on Node.js for Multiplayer Physics?</h1>
+<p>This article explores whether Planck.js can be executed on a Node.js
+server to handle authoritative multiplayer physics. We will break down
+how Planck.js functions in a server-side environment, examine the
+architecture required for a server-authoritative simulation, and look at
+the performance considerations and network synchronization strategies
+necessary to make it work effectively.</p>
+<h2 id="understanding-planckjs-on-the-server">Understanding Planck.js on
+the Server</h2>
+<p>Planck.js is a 2D physics engine written in JavaScript, rewritten
+from the popular C++ Box2D engine. Because it is written in pure
+JavaScript and does not rely on browser-specific APIs (like the DOM or
+WebGL), it runs natively in a Node.js environment.</p>
+<p>In a multiplayer game, running the physics engine on a Node.js server
+allows you to create a <strong>server-authoritative
+architecture</strong>. In this setup, the server runs the definitive
+simulation of the game world, processes player inputs, steps the physics
+world forward, and broadcasts the true object positions back to the
+clients. This prevents players from cheating by modifying their local
+game state.</p>
+<h2 id="implementation-architecture">Implementation Architecture</h2>
+<p>To implement authoritative physics with Planck.js in Node.js, your
+backend architecture typically follows a specific loop structure:</p>
+<ul>
+<li><strong>Fixed Timestep Simulation:</strong> Unlike client-side
+rendering which often ties physics to the frame rate
+(<code>requestAnimationFrame</code>), a server must step the Planck.js
+world at a strict, fixed interval (e.g., 60 times per second) using a
+standardized delta time.</li>
+<li><strong>Input Queueing:</strong> The server receives raw inputs
+(like keystrokes or movement vectors) from clients via WebSockets or
+WebRTC, validates them, and applies them as forces or velocities to the
+corresponding Planck.js bodies during the next physics step.</li>
+<li><strong>State Broadcasting:</strong> At a regular interval (often
+lower than the physics tick rate to save bandwidth, such as 20 times per
+second), the server serializes the positions, angles, and velocities of
+all active physics bodies and sends this snapshot to all connected
+clients.</li>
+</ul>
+<h2 id="performance-and-optimization">Performance and Optimization</h2>
+<p>While Planck.js is highly capable, JavaScript is single-threaded, and
+running complex physics simulations on a server comes with performance
+constraints.</p>
+<ul>
+<li><strong>CPU Limitations:</strong> JavaScript runs slower than
+compiled languages like C++. If your game requires hundreds of complex,
+colliding rigid bodies with intricate joint systems, a single Node.js
+process might struggle to maintain a stable tick rate.</li>
+<li><strong>Headless Execution:</strong> Because the server does not
+need to render graphics, you omit any debug drawers or canvas rendering
+code on the backend. The server only calculates the mathematical
+positions, which significantly saves CPU cycles.</li>
+<li><strong>Decoupled Networking:</strong> Keep network I/O separate
+from the physics loop. If a network socket bottlenecks, it shouldn't
+cause the entire Planck.js world simulation to freeze or lag.</li>
+</ul>
+<h2 id="network-synchronization-challenges">Network Synchronization
+Challenges</h2>
+<p>Running physics on Node.js solves the authority problem, but
+introducing network latency requires you to implement specific
+synchronization techniques on the client side to ensure smooth
+gameplay:</p>
+<ul>
+<li><strong>Client-Side Prediction:</strong> To avoid noticeable input
+lag, the client should run its own local instance of Planck.js,
+immediately moving the player's character when a key is pressed without
+waiting for the server's confirmation.</li>
+<li><strong>Server Reconciliation:</strong> When the client receives the
+authoritative snapshot from the Node.js server, it must compare its
+local position with the server's position. If a discrepancy exists, the
+client must snap to the server's position and re-apply any inputs sent
+since that snapshot's timestamp.</li>
+<li><strong>Entity Interpolation:</strong> Because the server sends
+updates at a lower rate than the client renders, the client must
+smoothly interpolate the positions of <em>other</em> players and objects
+between the last two received server snapshots to prevent visual
+stuttering.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

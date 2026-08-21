@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Simulate Pulley Joints in planck.js? - planck.js</title>
+    <meta name="description" content="This article provides a comprehensive guide on how to implement and simulate a pulley joint using planck.js, the 2D physics engine for JavaScript applications. You will learn the core mechanics of how a pulley joint operates, how it calculates and simula">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-simulate-pulley-joints-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Simulate Pulley Joints in planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-simulate-pulley-joints-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a comprehensive guide on how to implement and simulate a pulley joint using planck.js, the 2D physics engine for JavaScript applications. You will learn the core mechanics of how a pulley joint operates, how it calculates and simula" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-simulate-pulley-joints-in-planckjs">How to Simulate
+Pulley Joints in planck.js?</h1>
+<p>This article provides a comprehensive guide on how to implement and
+simulate a pulley joint using <strong>planck.js</strong>, the 2D physics
+engine for JavaScript applications. You will learn the core mechanics of
+how a pulley joint operates, how it calculates and simulates mechanical
+advantage, and the exact step-by-step code required to configure it in
+your physics world.</p>
+<h2 id="understanding-the-pulley-joint-in-planckjs">Understanding the
+Pulley Joint in planck.js</h2>
+<p>In 2D physics engines like planck.js (which is based on Box2D), a
+<strong>Pulley Joint</strong> is used to connect two bodies to two fixed
+ground anchors. When one body moves up, the other body moves down based
+on a simulated rope.</p>
+<p>Unlike a simple distance joint, a pulley joint allows you to simulate
+a <strong>mechanical advantage</strong> (or gear ratio). This means you
+can make it so that moving Body A by 1 meter causes Body B to move by 2
+meters, mimicking a real-world block and tackle system.</p>
+<h2 id="the-pulley-joint-equation">The Pulley Joint Equation</h2>
+<p>The physics engine maintains the total length of the simulated rope
+using a specific constraint equation. If the ratio is set to <span
+class="math inline">\(1.0\)</span>, the rope has a <span
+class="math inline">\(1:1\)</span> relationship.</p>
+<p>The fundamental formula governing the joint's behavior is:</p>
+<p><span class="math display">\[\text{Length}_1 + \text{ratio} \times
+\text{Length}_2 = \text{constant}\]</span></p>
+<p>Where:</p>
+<ul>
+<li><strong><span
+class="math inline">\(\text{Length}_1\)</span></strong> is the distance
+between Ground Anchor 1 and Body 1.</li>
+<li><strong><span
+class="math inline">\(\text{Length}_2\)</span></strong> is the distance
+between Ground Anchor 2 and Body 2.</li>
+<li><strong><span class="math inline">\(\text{ratio}\)</span></strong>
+is the transmission factor (mechanical advantage).</li>
+</ul>
+<p>If you set the ratio to <span class="math inline">\(2.0\)</span>,
+Body 1 will have to move two units for every one unit Body 2 moves. This
+effectively doubles the simulated force applied to Body 2 from Body 1's
+weight.</p>
+<h2 id="step-by-step-implementation">Step-by-Step Implementation</h2>
+<p>To create a pulley joint in planck.js, you need two dynamic bodies
+and two fixed points in the world to serve as the overhead pulleys.</p>
+<h3 id="1-define-the-anchors-and-bodies">1. Define the Anchors and
+Bodies</h3>
+<p>First, you must establish your world coordinates, your two moving
+bodies, and the two ground anchors where the "pulleys" are mounted.</p>
+<h3 id="2-configure-the-joint-definition">2. Configure the Joint
+Definition</h3>
+<p>You use <code>PulleyJointDef</code> to configure the properties
+before instantiating the joint in the world.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> planck <span class="op">=</span> <span class="pp">require</span>(<span class="st">&#39;planck-js&#39;</span>)<span class="op">;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> world <span class="op">=</span> planck<span class="op">.</span><span class="fu">World</span>()<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// ... (Assume bodyA and bodyB are already created dynamic bodies)</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Define ground anchor points (where the pulleys hang from)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> groundAnchorA <span class="op">=</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="op">-</span><span class="fl">4.0</span><span class="op">,</span> <span class="fl">10.0</span>)<span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> groundAnchorB <span class="op">=</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="fl">4.0</span><span class="op">,</span> <span class="fl">10.0</span>)<span class="op">;</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">// Define local anchor points on the bodies themselves</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> localAnchorA <span class="op">=</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span>)<span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> localAnchorB <span class="op">=</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span>)<span class="op">;</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">// Set the mechanical advantage ratio</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> ratio <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span> </span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">// Create the joint definition</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> pulleyJoint <span class="op">=</span> world<span class="op">.</span><span class="fu">createJoint</span>(planck<span class="op">.</span><span class="fu">PulleyJoint</span>({</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">groundAnchorA</span><span class="op">:</span> groundAnchorA<span class="op">,</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="dt">groundAnchorB</span><span class="op">:</span> groundAnchorB<span class="op">,</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bodyA</span><span class="op">:</span> bodyA<span class="op">,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="dt">bodyB</span><span class="op">:</span> bodyB<span class="op">,</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  <span class="dt">localAnchorA</span><span class="op">:</span> localAnchorA<span class="op">,</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  <span class="dt">localAnchorB</span><span class="op">:</span> localAnchorB<span class="op">,</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">ratio</span><span class="op">:</span> ratio</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>}))<span class="op">;</span></span></code></pre></div>
+<h2 id="key-parameters-for-tuning">Key Parameters for Tuning</h2>
+<p>When configuring your pulley joint to get the exact mechanical
+advantage you need, keep these parameters in mind:</p>
+<ul>
+<li><strong>ratio</strong>: A ratio greater than <span
+class="math inline">\(1.0\)</span> increases the mechanical advantage of
+BodyA over BodyB. A ratio less than <span
+class="math inline">\(1.0\)</span> reverses this effect.</li>
+<li><strong>maxLengthA and maxLengthB</strong>: These properties serve
+as safety constraints. They prevent the simulated rope from extending
+infinitely, mimicking a physical knot or end-stop on the cable.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

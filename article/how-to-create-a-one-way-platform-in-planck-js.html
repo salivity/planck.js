@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Create a One-Way Platform in Planck.js? - planck.js</title>
+    <meta name="description" content="One-way platforms are a staple of 2D platformer games, allowing a player character to jump up from below a platform but stand firmly on top of it. In planck.js (the JavaScript rewrite of the Box2D physics engine), implementing this mechanic requires usin">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-create-a-one-way-platform-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Create a One-Way Platform in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-create-a-one-way-platform-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="One-way platforms are a staple of 2D platformer games, allowing a player character to jump up from below a platform but stand firmly on top of it. In planck.js (the JavaScript rewrite of the Box2D physics engine), implementing this mechanic requires usin" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-create-a-one-way-platform-in-planckjs">How to Create a
+One-Way Platform in Planck.js?</h1>
+<p>One-way platforms are a staple of 2D platformer games, allowing a
+player character to jump up from below a platform but stand firmly on
+top of it. In planck.js (the JavaScript rewrite of the Box2D physics
+engine), implementing this mechanic requires using the global world
+contact listener system. Specifically, by intercepting the collision
+process within the <code>preSolve</code> lifecycle hook, you can
+evaluate the spatial or directional relationship between the player and
+the platform and selectively disable the collision before the physics
+solver processes it.</p>
+<h2 id="the-role-of-the-presolve-listener">The Role of the PreSolve
+Listener</h2>
+<p>Planck.js provides several contact events, including
+<code>beginContact</code>, <code>endContact</code>,
+<code>preSolve</code>, and <code>postSolve</code>. While
+<code>beginContact</code> only fires once when two objects first touch,
+<code>preSolve</code> fires on every single physics step as long as the
+objects' bounding boxes overlap. This makes <code>preSolve</code> the
+ideal hook for one-way platforms, because you can continuously determine
+whether the collision response should be active or inactive using the
+contact's <code>setEnabled(false)</code> method.</p>
+<h2 id="step-by-step-implementation">Step-by-Step Implementation</h2>
+<p>To build a functional one-way platform, you must establish
+identifiable properties on your physics bodies or fixtures and register
+a custom listener on the world instance.</p>
+<h3 id="1-labeling-objects-with-user-data">1. Labeling Objects with User
+Data</h3>
+<p>When creating your player and platform fixtures, attach distinct
+identifying labels to their <code>userData</code> properties. This
+allows your contact listener to easily distinguish them from other
+objects in the physics world.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Define the static platform</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> platformBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>({ <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;static&#39;</span><span class="op">,</span> <span class="dt">position</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">5</span>) })<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>platformBody<span class="op">.</span><span class="fu">createFixture</span>({</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">shape</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Edge</span>(planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="op">-</span><span class="dv">2</span><span class="op">,</span> <span class="dv">0</span>)<span class="op">,</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">2</span><span class="op">,</span> <span class="dv">0</span>))<span class="op">,</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">userData</span><span class="op">:</span> { <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;one_way_platform&#39;</span> }</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co">// Define the dynamic character</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> playerBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>({ <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;dynamic&#39;</span><span class="op">,</span> <span class="dt">position</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Vec2</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">2</span>) })<span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>playerBody<span class="op">.</span><span class="fu">createFixture</span>({</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">shape</span><span class="op">:</span> planck<span class="op">.</span><span class="fu">Box</span>(<span class="fl">0.5</span><span class="op">,</span> <span class="fl">1.0</span>)<span class="op">,</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">userData</span><span class="op">:</span> { <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;player&#39;</span> }</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h3 id="2-writing-the-contact-listener-logic">2. Writing the Contact
+Listener Logic</h3>
+<p>Register a <code>preSolve</code> callback on your world instance.
+Within this function, you will extract both fixtures, verify that they
+represent the player and the platform, and inspect the player's position
+relative to the platform edge.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>world<span class="op">.</span><span class="fu">on</span>(<span class="st">&#39;preSolve&#39;</span><span class="op">,</span> (contact<span class="op">,</span> oldManifold) <span class="kw">=&gt;</span> {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fixtureA <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureA</span>()<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fixtureB <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureB</span>()<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dataA <span class="op">=</span> fixtureA<span class="op">.</span><span class="fu">getUserData</span>()<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> dataB <span class="op">=</span> fixtureB<span class="op">.</span><span class="fu">getUserData</span>()<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Identify which fixture is the player and which is the platform</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> playerFixture <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> platformFixture <span class="op">=</span> <span class="kw">null</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (dataA<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;player&#39;</span> <span class="op">&amp;&amp;</span> dataB<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;one_way_platform&#39;</span>) {</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    playerFixture <span class="op">=</span> fixtureA<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    platformFixture <span class="op">=</span> fixtureB<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (dataB<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;player&#39;</span> <span class="op">&amp;&amp;</span> dataA<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;one_way_platform&#39;</span>) {</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    playerFixture <span class="op">=</span> fixtureB<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    platformFixture <span class="op">=</span> fixtureA<span class="op">;</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If this contact does not involve our one-way platform, ignore it</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>playerFixture <span class="op">||</span> <span class="op">!</span>platformFixture) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> playerBody <span class="op">=</span> playerFixture<span class="op">.</span><span class="fu">getBody</span>()<span class="op">;</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> platformBody <span class="op">=</span> platformFixture<span class="op">.</span><span class="fu">getBody</span>()<span class="op">;</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Get positions</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> playerPos <span class="op">=</span> playerBody<span class="op">.</span><span class="fu">getPosition</span>()<span class="op">;</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> platformPos <span class="op">=</span> platformBody<span class="op">.</span><span class="fu">getPosition</span>()<span class="op">;</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Determine the threshold for passing through</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">// This assumes the platform&#39;s top surface is at platformPos.y</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Adjust the offset based on your character&#39;s half-height</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> playerBottomY <span class="op">=</span> playerPos<span class="op">.</span><span class="at">y</span> <span class="op">-</span> <span class="fl">1.0</span><span class="op">;</span> </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// If the player&#39;s feet are below the platform surface, disable collision</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (playerBottomY <span class="op">&lt;</span> platformPos<span class="op">.</span><span class="at">y</span> <span class="op">-</span> <span class="fl">0.1</span>) {</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    contact<span class="op">.</span><span class="fu">setEnabled</span>(<span class="kw">false</span>)<span class="op">;</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h2 id="alternative-direction-based-approach">Alternative
+Direction-Based Approach</h2>
+<p>Checking positions works well for simple horizontal surfaces, but if
+your platform is moving or you want to base passing through purely on
+direction, you can look at the relative velocity or the collision
+normal.</p>
+<p>Using <code>contact.getWorldManifold()</code> inside
+<code>preSolve</code>, you can extract the normal vector of the
+collision. If the character is moving upward or colliding from the
+bottom side of the platform shape, you can check if the relative
+velocity dot product with the normal vector is pointing in a direction
+that implies passing through, and call
+<code>contact.setEnabled(false)</code> accordingly. Note that because
+<code>preSolve</code> resets the enabled flag to <code>true</code> on
+every physics step, you must execute this evaluation continually until
+the player has completely cleared the platform's boundary.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

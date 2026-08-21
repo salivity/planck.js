@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is a Chain Shape in Planck.js? - planck.js</title>
+    <meta name="description" content="This article provides an overview of the chain shape in Planck.js, a 2D physics engine for JavaScript. It covers what a chain shape is, its key characteristics, and the specific scenarios where you should use it instead of other shape types like polygons">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/what-is-a-chain-shape-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What is a Chain Shape in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/what-is-a-chain-shape-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides an overview of the chain shape in Planck.js, a 2D physics engine for JavaScript. It covers what a chain shape is, its key characteristics, and the specific scenarios where you should use it instead of other shape types like polygons" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="what-is-a-chain-shape-in-planckjs">What is a Chain Shape in
+Planck.js?</h1>
+<p>This article provides an overview of the chain shape in Planck.js, a
+2D physics engine for JavaScript. It covers what a chain shape is, its
+key characteristics, and the specific scenarios where you should use it
+instead of other shape types like polygons or edges.</p>
+<hr />
+<h2 id="understanding-the-chain-shape">Understanding the Chain
+Shape</h2>
+<p>In Planck.js (which is a JavaScript port of the Box2D physics
+engine), a <strong>chain shape</strong> is a collection of line segments
+linked together to form an open or closed path. It provides an efficient
+way to connect multiple vertices into a single shape, allowing you to
+create complex, winding static boundaries without the overhead of
+creating dozens of individual edge shapes.</p>
+<h3 id="key-characteristics">Key Characteristics</h3>
+<ul>
+<li><strong>Ghost Vertices:</strong> Chain shapes support "ghost
+vertices" at the beginning and end of the chain. These are hidden
+vertices that help the physics engine smoothly calculate collisions when
+a dynamic body slides across the joints between segments, preventing the
+object from getting stuck on internal corners.</li>
+<li><strong>No Volume:</strong> Because it consists entirely of line
+segments, a chain shape has no area or volume. Consequently, it does not
+have a mass or moment of inertia.</li>
+<li><strong>Two-Sided Collision:</strong> Collisions can occur on both
+sides of a chain shape segment, unlike polygons which only collide on
+their exterior faces.</li>
+</ul>
+<hr />
+<h2 id="when-to-use-a-chain-shape">When to Use a Chain Shape</h2>
+<p>Chain shapes are highly specialized and should be used under specific
+circumstances within your physics simulation.</p>
+<h3 id="1-creating-complex-static-terrains">1. Creating Complex Static
+Terrains</h3>
+<p>If your game or simulation features a continuous, uneven ground—such
+as a rocky hillside, a cavern floor, or a racing track—a chain shape is
+the ideal choice. It allows you to define the entire landscape using an
+array of coordinates, ensuring seamless physics interactions as objects
+move across it.</p>
+<h3 id="2-eliminating-internal-collision-glitches">2. Eliminating
+Internal Collision Glitches</h3>
+<p>When you line up multiple individual box or edge shapes side-by-side
+to form a floor, moving objects can occasionally "snag" on the
+microscopic gaps or seams between them due to floating-point math
+inaccuracies. A chain shape eliminates this issue entirely by treating
+the connected segments as a single cohesive boundary with internal
+smooth-sliding logic.</p>
+<h3 id="3-simulating-hollow-containers">3. Simulating Hollow
+Containers</h3>
+<p>Because chain shapes can be closed (connecting the last vertex back
+to the first), they are perfect for creating the inside walls of a
+container, a cage, or a hollow room where dynamic objects need to bounce
+around <em>inside</em> the perimeter.</p>
+<hr />
+<h2 id="important-limitations">Important Limitations</h2>
+<p>While powerful, chain shapes come with strict rules:</p>
+<ul>
+<li><strong>Static Bodies Only:</strong> Chain shapes should only be
+attached to static physics bodies (<code>Body.STATIC</code>). They are
+not designed to be used on dynamic or kinematic bodies that move around
+and react to forces.</li>
+<li><strong>No Self-Intersection:</strong> The segments of a chain shape
+should never cross over one another, as self-intersection can confuse
+the collision detection algorithms and cause unpredictable physics
+behavior.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

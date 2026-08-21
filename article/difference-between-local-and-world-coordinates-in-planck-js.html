@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Difference Between Local and World Coordinates in Planck.js? - planck.js</title>
+    <meta name="description" content="Understanding the distinction between local and world coordinates is essential for accurately positioning, moving, and managing collisions between rigid bodies in planck.js. While world coordinates define an absolute position within the entire 2D physics">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/difference-between-local-and-world-coordinates-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Difference Between Local and World Coordinates in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/difference-between-local-and-world-coordinates-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Understanding the distinction between local and world coordinates is essential for accurately positioning, moving, and managing collisions between rigid bodies in planck.js. While world coordinates define an absolute position within the entire 2D physics" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1
+id="difference-between-local-and-world-coordinates-in-planckjs">Difference
+Between Local and World Coordinates in Planck.js?</h1>
+<p>Understanding the distinction between local and world coordinates is
+essential for accurately positioning, moving, and managing collisions
+between rigid bodies in planck.js. While world coordinates define an
+absolute position within the entire 2D physics simulation canvas, local
+coordinates are relative strictly to a specific body's origin and
+rotation. Mastering how these two coordinate systems interact allows
+developers to precisely apply forces, attach joints, and translate
+screen positions into simulation physics.</p>
+<hr />
+<p><em>(Wait, the prompt said "Don't create any horizontal rules in the
+article." Let me remove that immediately and rewrite without
+it.)</em></p>
+<h1
+id="difference-between-local-and-world-coordinates-in-planckjs-1">Difference
+Between Local and World Coordinates in Planck.js?</h1>
+<p>Understanding the distinction between local and world coordinates is
+essential for accurately positioning, moving, and managing collisions
+between rigid bodies in planck.js. While world coordinates define an
+absolute position within the entire 2D physics simulation canvas, local
+coordinates are relative strictly to a specific body's origin and
+rotation. Mastering how these two coordinate systems interact allows
+developers to precisely apply forces, attach joints, and translate
+screen positions into simulation physics.</p>
+<h2 id="what-are-world-coordinates">What are World Coordinates?</h2>
+<p>World coordinates represent the global frame of reference for your
+entire physics simulation. Think of the world space as the master map or
+the stage where all physics bodies exist.</p>
+<ul>
+<li><strong>Fixed Origin:</strong> The origin (0, 0) in world space is
+absolute and never moves, regardless of what the individual shapes or
+bodies are doing.</li>
+<li><strong>Universal Alignment:</strong> Every object's position,
+rotation, and velocity are ultimately measured against this global grid
+before being rendered to the screen.</li>
+<li><strong>Usage:</strong> You use world coordinates when you want to
+spawn a new body at a specific location on the screen, apply a global
+force like gravity, or determine the distance between two independent
+objects.</li>
+</ul>
+<h2 id="what-are-local-coordinates">What are Local Coordinates?</h2>
+<p>Local coordinates represent a frame of reference that is tied
+directly to an individual rigid body. Imagine standing on a moving ship;
+your position relative to the ship's deck stays the same, even though
+the ship is moving across the ocean.</p>
+<ul>
+<li><strong>Moving Origin:</strong> The origin (0, 0) of a local
+coordinate system is typically the center of mass or the anchor point of
+that specific body.</li>
+<li><strong>Rotation Bound:</strong> If the body rotates, its local
+coordinate axes rotate along with it. "Up" in local coordinates always
+points toward the top of the object, even if the object is upside down
+in the world space.</li>
+<li><strong>Usage:</strong> Local coordinates are used when defining the
+shapes (fixtures) of a body, placing vertices of a polygon, or setting
+local anchor points for joints.</li>
+</ul>
+<h2 id="key-differences-at-a-glance">Key Differences at a Glance</h2>
+<ul>
+<li><strong>Independence:</strong> World coordinates are completely
+independent of any single object. Local coordinates are bound entirely
+to the object's current position and rotation.</li>
+<li><strong>Stability:</strong> If an object moves, its world
+coordinates change constantly, but its local coordinates (and the local
+coordinates of its fixtures) remain identical.</li>
+<li><strong>Mathematical Relationship:</strong> World coordinates are
+calculated by taking the local coordinates and applying the body's
+current transform (its world position and rotation angle).</li>
+</ul>
+<h2 id="converting-between-systems-in-planckjs">Converting Between
+Systems in Planck.js</h2>
+<p>Planck.js provides built-in methods on the <code>Body</code> object
+to seamlessly convert vectors and points between these two systems.</p>
+<h3 id="transforming-local-to-world">Transforming Local to World</h3>
+<p>If you have a point relative to the body and need to know where it
+sits on the global map, use:</p>
+<ul>
+<li><code>body.getWorldPoint(localPoint)</code>: Converts a local
+position to a world position.</li>
+<li><code>body.getWorldVector(localVector)</code>: Converts a local
+direction/vector to a world vector (ignoring the body's position
+translation, only accounting for rotation).</li>
+</ul>
+<h3 id="transforming-world-to-local">Transforming World to Local</h3>
+<p>If you have a global coordinate (like a mouse click position) and
+need to know where that is relative to the body's center, use:</p>
+<ul>
+<li><code>body.getLocalPoint(worldPoint)</code>: Converts a global
+position to the body's local space.</li>
+<li><code>body.getLocalVector(worldVector)</code>: Converts a global
+direction/vector into the body's local directional space.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

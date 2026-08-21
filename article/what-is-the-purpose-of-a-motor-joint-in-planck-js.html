@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Is the Purpose of a Motor Joint in Planck.js? - planck.js</title>
+    <meta name="description" content="A motor joint in planck.js—a 2D physics engine for JavaScript games and simulations—is used to control the relative motion between two rigid bodies by applying linear and angular forces. Unlike other joints that rigidly constrain movement or simulate">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/what-is-the-purpose-of-a-motor-joint-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="What Is the Purpose of a Motor Joint in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/what-is-the-purpose-of-a-motor-joint-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="A motor joint in planck.js—a 2D physics engine for JavaScript games and simulations—is used to control the relative motion between two rigid bodies by applying linear and angular forces. Unlike other joints that rigidly constrain movement or simulate" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="what-is-the-purpose-of-a-motor-joint-in-planckjs">What Is the
+Purpose of a Motor Joint in Planck.js?</h1>
+<p>A motor joint in planck.js—a 2D physics engine for JavaScript games
+and simulations—is used to control the relative motion between two rigid
+bodies by applying linear and angular forces. Unlike other joints that
+rigidly constrain movement or simulate physical connections like hinges,
+a motor joint drives a body toward a target position and orientation
+relative to another body. This article explores how motor joints work,
+their primary use cases, and how they differ from other joint types in
+the engine.</p>
+<h3 id="how-a-motor-joint-works">How a Motor Joint Works</h3>
+<p>The motor joint attempts to match a specific target offset and target
+angle between two connected bodies. It computes the necessary linear
+force and torque required to eliminate the gap between the current state
+and the desired state.</p>
+<p>Key properties that define its behavior include:</p>
+<ul>
+<li><strong>Linear Offset:</strong> The desired relative position of
+body B relative to body A.</li>
+<li><strong>Angular Offset:</strong> The desired relative rotation
+between the two bodies.</li>
+<li><strong>Maximum Force:</strong> The upper limit of linear force the
+joint can apply to reach the target position.</li>
+<li><strong>Maximum Torque:</strong> The upper limit of rotational force
+the joint can exert to reach the target angle.</li>
+<li><strong>Correction Factor:</strong> A multiplier (usually between 0
+and 1) that determines how aggressively the joint corrects
+deviations.</li>
+</ul>
+<h3 id="key-use-cases">Key Use Cases</h3>
+<p>Motor joints are highly versatile because they do not completely lock
+bodies together, allowing for smooth, force-limited corrections. Common
+applications include:</p>
+<ul>
+<li><strong>Character Movement:</strong> Driving a character's physics
+body toward a cursor position or moving platform while still allowing
+the character to be pushed back by heavy obstacles.</li>
+<li><strong>Kinematic-like Behavior with Forces:</strong> Moving dynamic
+objects along a specific path or to a specific spot without overriding
+the physics solver, ensuring they still collide naturally with other
+objects.</li>
+<li><strong>Regulating Relative Rotation:</strong> Keeping an object
+upright or tilted at a specific angle relative to another moving object,
+such as a vehicle chassis.</li>
+</ul>
+<h3 id="motor-joint-vs-other-joints">Motor Joint vs. Other Joints</h3>
+<p>While joints like the Revolute Joint or Prismatic Joint have built-in
+"motors" to spin a wheel or slide a piston, the Motor Joint itself is an
+independent joint type designed entirely around tracking a relative
+transform.</p>
+<table>
+<thead>
+<tr>
+<th>Joint Type</th>
+<th>Primary Function</th>
+<th>Control Mechanism</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Motor Joint</strong></td>
+<td>Drives a body to a relative position and angle</td>
+<td>Linear and angular offsets with maximum force limits</td>
+</tr>
+<tr>
+<td><strong>Revolute Joint</strong></td>
+<td>Constraints bodies to a shared pivot point</td>
+<td>Optional angular motor to control rotational speed</td>
+</tr>
+<tr>
+<td><strong>Prismatic Joint</strong></td>
+<td>Constraints movement along a single linear axis</td>
+<td>Optional linear motor to control translation speed</td>
+</tr>
+</tbody>
+</table>
+<p>By using a motor joint, developers gain fine-grained control over
+object positioning through forces, maintaining realistic physics
+interactions without sacrificing precise movement controls.</p></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

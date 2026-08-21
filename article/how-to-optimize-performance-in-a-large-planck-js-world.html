@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Optimize Performance in a Large planck.js World? - planck.js</title>
+    <meta name="description" content="Simulating a large physics world in planck.js—a 2D JavaScript physics engine based on Box2D—can quickly become computationally expensive, leading to frame drops and sluggish performance. To maintain a smooth 60 FPS, developers must implement strategi">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-optimize-performance-in-a-large-planck-js-world">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Optimize Performance in a Large planck.js World? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-optimize-performance-in-a-large-planck-js-world" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="Simulating a large physics world in planck.js—a 2D JavaScript physics engine based on Box2D—can quickly become computationally expensive, leading to frame drops and sluggish performance. To maintain a smooth 60 FPS, developers must implement strategi" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-optimize-performance-in-a-large-planckjs-world">How to
+Optimize Performance in a Large planck.js World?</h1>
+<p>Simulating a large physics world in planck.js—a 2D JavaScript physics
+engine based on Box2D—can quickly become computationally expensive,
+leading to frame drops and sluggish performance. To maintain a smooth 60
+FPS, developers must implement strategic optimizations focused on
+minimizing collision overhead, managing body states, and efficient
+memory allocation. This article explores actionable best practices to
+scale your planck.js simulation effectively, covering sleep management,
+custom broad-phase filtering, body throttling, and memory reuse.</p>
+<h3 id="1-enable-and-tune-body-sleeping">1. Enable and Tune Body
+Sleeping</h3>
+<p>One of the easiest yet most powerful ways to save CPU cycles is to
+let resting bodies "sleep." When a body comes to a complete rest,
+planck.js can stop simulating its physics until another active body
+collides with it.</p>
+<ul>
+<li><strong>Enable Sleeping globally:</strong> Ensure
+<code>allowSleep: true</code> is passed into your World definition.</li>
+<li><strong>Adjust Thresholds:</strong> Tune the
+<code>timeToSleep</code>, <code>linearSleepTolerance</code>, and
+<code>angularSleepTolerance</code> settings in the world configuration
+to make bodies fall asleep faster if your game allows for it.</li>
+</ul>
+<h3 id="2-implement-efficient-broad-phase-filtering">2. Implement
+Efficient Broad-Phase Filtering</h3>
+<p>In a massive world, the engine spends significant time calculating
+which objects are near each other. You can dramatically reduce this
+overhead by filtering out unnecessary checks before they reach the
+narrow-phase collision detector.</p>
+<ul>
+<li><strong>Use Collision Categories and Masks:</strong> Explicitly
+define <code>categoryBits</code> and <code>maskBits</code> on your
+fixture definitions. If bullets don't need to collide with other
+bullets, filter them out here so the engine never wastes time processing
+the potential collision.</li>
+<li><strong>Custom Contact Filtering:</strong> Implement a custom
+<code>world.setContactFilter(filter)</code> function to inject
+high-level game logic. For instance, if two objects are in different
+rooms or zones, immediately return <code>false</code> to skip the
+collision pipeline entirely.</li>
+</ul>
+<h3 id="3-deactivate-or-destroy-out-of-bounds-bodies">3. Deactivate or
+Destroy Out-of-Bounds Bodies</h3>
+<p>A common performance trap is leaving objects active when they are far
+outside the viewport or player's interaction zone.</p>
+<ul>
+<li><strong>Frustum Culling for Physics:</strong> Periodically check the
+coordinates of your bodies against the active camera viewport. For
+bodies that are too far away, use <code>body.setActive(false)</code>.
+This removes them from the physics simulation loop without destroying
+them.</li>
+<li><strong>Object Pooling:</strong> Instead of constantly creating
+(<code>world.createBody()</code>) and destroying
+(<code>world.destroyBody()</code>) projectiles or temporary obstacles,
+deactivate them and store them in an array (a pool). When a new object
+is needed, reactivate it and reset its position. This avoids heavy
+JavaScript garbage collection spikes.</li>
+</ul>
+<h3 id="4-simplify-fixture-geometries">4. Simplify Fixture
+Geometries</h3>
+<p>The complexity of a body's shape directly correlates to the time it
+takes to solve its collisions.</p>
+<ul>
+<li><strong>Prefer Circles and Boxes:</strong> Circle-to-circle and
+box-to-box calculations are incredibly fast. Avoid complex polygon
+shapes wherever possible.</li>
+<li><strong>Use Compound Shapes Wisely:</strong> If an object requires a
+complex shape, break it down into a few simple box or circle fixtures
+attached to a single body rather than a highly detailed polygon.</li>
+<li><strong>Avoid Excess Fixtures:</strong> Do not map every visual
+detail of a sprite to a physics fixture. A rough approximation is
+usually indistinguishable to the player and significantly faster.</li>
+</ul>
+<h3 id="5-optimize-the-simulation-step">5. Optimize the Simulation
+Step</h3>
+<p>The way you advance your physics world dictates both its stability
+and its performance overhead.</p>
+<ul>
+<li><strong>Use a Fixed Time Step:</strong> Never pass a variable delta
+time (like <code>requestAnimationFrame</code>'s raw elapsed time)
+directly into <code>world.step()</code>. Use a fixed time step (e.g.,
+<code>1 / 60</code>) combined with a time accumulator to keep the
+physics deterministic and predictable.</li>
+<li><strong>Lower Constraint Iterations:</strong> The
+<code>world.step(timeStep, velocityIterations, positionIterations)</code>
+method relies on iterative solvers. Reducing the velocity and position
+iterations (e.g., from <code>8</code> and <code>3</code> down to
+<code>4</code> and <code>1</code> for mobile or massive worlds)
+decreases CPU load, though it may make joints and collisions slightly
+softer.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

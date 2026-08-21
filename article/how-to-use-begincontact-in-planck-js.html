@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How to Use BeginContact in Planck.js? - planck.js</title>
+    <meta name="description" content="This article provides a practical guide on how to utilize the BeginContact event in planck.js to detect the exact moment two fixtures start colliding. You will learn how to set up a contact listener, access the fixtures involved in the collision, and imp">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/how-to-use-begincontact-in-planck-js">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="How to Use BeginContact in Planck.js? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/how-to-use-begincontact-in-planck-js" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="This article provides a practical guide on how to utilize the BeginContact event in planck.js to detect the exact moment two fixtures start colliding. You will learn how to set up a contact listener, access the fixtures involved in the collision, and imp" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="how-to-use-begincontact-in-planckjs">How to Use BeginContact in
+Planck.js?</h1>
+<p>This article provides a practical guide on how to utilize the
+<code>BeginContact</code> event in planck.js to detect the exact moment
+two fixtures start colliding. You will learn how to set up a contact
+listener, access the fixtures involved in the collision, and implement
+custom logic like scoring or triggering visual effects when objects
+touch.</p>
+<hr />
+<h2 id="setting-up-the-contact-listener">Setting Up the Contact
+Listener</h2>
+<p>In planck.js (a 2D physics engine based on Box2D), collision handling
+is managed by registering listener functions on the physics world
+object. The <code>BeginContact</code> event fires during the physics
+step immediately after two fixtures overlap for the first time.</p>
+<p>To start listening for these collisions, you need to call
+<code>world.on('begin-contact', callback)</code>.</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Initialize your planck.js world</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> world <span class="op">=</span> planck<span class="op">.</span><span class="fu">World</span>()<span class="op">;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Register the BeginContact listener</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>world<span class="op">.</span><span class="fu">on</span>(<span class="st">&#39;begin-contact&#39;</span><span class="op">,</span> <span class="kw">function</span>(contact) {</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Collision handling logic goes here</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<hr />
+<h2 id="extracting-fixtures-and-bodies">Extracting Fixtures and
+Bodies</h2>
+<p>The <code>contact</code> object passed into your callback function
+contains all the data regarding the collision. To find out which
+specific objects collided, you must extract the fixtures, and
+optionally, the rigid bodies they are attached to.</p>
+<ul>
+<li><strong><code>contact.getFixtureA()</code></strong>: Returns the
+first fixture in the collision.</li>
+<li><strong><code>contact.getFixtureB()</code></strong>: Returns the
+second fixture in the collision.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>world<span class="op">.</span><span class="fu">on</span>(<span class="st">&#39;begin-contact&#39;</span><span class="op">,</span> <span class="kw">function</span>(contact) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> fixtureA <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureA</span>()<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> fixtureB <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureB</span>()<span class="op">;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> bodyA <span class="op">=</span> fixtureA<span class="op">.</span><span class="fu">getBody</span>()<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> bodyB <span class="op">=</span> fixtureB<span class="op">.</span><span class="fu">getBody</span>()<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<hr />
+<h2 id="identifying-specific-game-objects">Identifying Specific Game
+Objects</h2>
+<p>Because <code>BeginContact</code> triggers for <em>every</em>
+collision in the world, you need a way to filter and identify the
+interacting objects. The most common method is using the
+<code>setUserData()</code> and <code>getUserData()</code> methods on
+fixtures or bodies to store identifiers.</p>
+<h3 id="1-assigning-labels-during-creation">1. Assigning Labels during
+Creation</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Player Body</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> playerBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>()<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> playerFixture <span class="op">=</span> playerBody<span class="op">.</span><span class="fu">createFixture</span>(planck<span class="op">.</span><span class="fu">Circle</span>(<span class="fl">1.0</span>))<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>playerFixture<span class="op">.</span><span class="fu">setUserData</span>({ <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;player&#39;</span> })<span class="op">;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Coin Body</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> coinBody <span class="op">=</span> world<span class="op">.</span><span class="fu">createBody</span>()<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> coinFixture <span class="op">=</span> coinBody<span class="op">.</span><span class="fu">createFixture</span>(planck<span class="op">.</span><span class="fu">Box</span>(<span class="fl">0.5</span><span class="op">,</span> <span class="fl">0.5</span>))<span class="op">;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>coinFixture<span class="op">.</span><span class="fu">setUserData</span>({ <span class="dt">type</span><span class="op">:</span> <span class="st">&#39;coin&#39;</span> })<span class="op">;</span></span></code></pre></div>
+<h3 id="2-filtering-inside-the-listener">2. Filtering inside the
+Listener</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>world<span class="op">.</span><span class="fu">on</span>(<span class="st">&#39;begin-contact&#39;</span><span class="op">,</span> <span class="kw">function</span>(contact) {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> dataA <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureA</span>()<span class="op">.</span><span class="fu">getUserData</span>()<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> dataB <span class="op">=</span> contact<span class="op">.</span><span class="fu">getFixtureB</span>()<span class="op">.</span><span class="fu">getUserData</span>()<span class="op">;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">// Check if one is a player and the other is a coin</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((dataA<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;player&#39;</span> <span class="op">&amp;&amp;</span> dataB<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;coin&#39;</span>) <span class="op">||</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>        (dataB<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;player&#39;</span> <span class="op">&amp;&amp;</span> dataA<span class="op">?.</span><span class="at">type</span> <span class="op">===</span> <span class="st">&#39;coin&#39;</span>)) {</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&#39;Player collected a coin!&#39;</span>)<span class="op">;</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">// Trigger gameplay logic here (e.g., increase score)</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<hr />
+<h2 id="important-considerations">Important Considerations</h2>
+<ul>
+<li><strong>Physics Step Lock</strong>: You cannot safely destroy bodies
+or modify the world topology (like creating new joints or bodies)
+directly inside the <code>BeginContact</code> callback. If you need to
+destroy a collided object (e.g., deleting a collected coin), store a
+reference to the body in an array and destroy it <em>after</em> the
+current physics step completes.</li>
+<li><strong>Sensors</strong>: If you want to detect overlaps without
+physical bouncing or deflection, make sure to set
+<code>fixture.setSensor(true)</code> on your triggers.
+<code>BeginContact</code> will still fire normally for sensors.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>

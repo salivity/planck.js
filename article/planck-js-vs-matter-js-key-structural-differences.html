@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4Y4YXFHZS"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag(){
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'G-R4Y4YXFHZS');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planck.js vs Matter.js: Key Structural Differences? - planck.js</title>
+    <meta name="description" content="When developing 2D web games or physics simulations, choosing the right physics engine is critical for performance and ease of development. This article provides a structural comparison between planck.js and Matter.js, highlighting how their core archite">
+    <link rel="canonical" href="https://salivity.github.io/planck.js/article/planck-js-vs-matter-js-key-structural-differences">
+    <link rel="icon" href="/planck.js/favicon.ico">
+    <link rel="stylesheet" href="/planck.js/css/style.css">
+    <link media="print" rel="stylesheet" href="/planck.js/css/print.css">
+    <script src="/planck.js/js/fuse.min.js"></script>
+    <script src="/planck.js/js/script.js"></script>
+    <script id="MathJax-script" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/4.1.3/tex-chtml.min.js" defer></script>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Planck.js vs Matter.js: Key Structural Differences? - planck.js" />
+    <meta property="og:url" content="https://salivity.github.io/planck.js/article/planck-js-vs-matter-js-key-structural-differences" />
+    <meta property="og:image:url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:secure_url" content="https://salivity.github.io/planck.js/images/open-graph/default.webp" />
+    <meta property="og:image:width" content="1120" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:description" content="When developing 2D web games or physics simulations, choosing the right physics engine is critical for performance and ease of development. This article provides a structural comparison between planck.js and Matter.js, highlighting how their core archite" />
+    <link rel="manifest" href="/planck.js/pwa/manifest.json" />
+</head>
+<body>
+    <header>
+        <a href="/planck.js/" aria-label="Go To Home Page" title="Go To Home Page" id="logo">
+            <span>salivity.github.io/</span><span>planck.js</span>
+        </a>
+        <nav>
+            <ul class="header-links">
+                <li><a href="https://github.com/salivity" title="Github" aria-label="Go To Github Profile Page"><svg class="svg-icon" focusable="false" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 1.27a11 11 0 00-3.48 21.46c.55.09.73-.28.73-.55v-1.84c-3.03.64-3.67-1.46-3.67-1.46-.55-1.29-1.28-1.65-1.28-1.65-.92-.65.1-.65.1-.65 1.1 0 1.73 1.1 1.73 1.1.92 1.65 2.57 1.2 3.21.92a2 2 0 01.64-1.47c-2.47-.27-5.04-1.19-5.04-5.5 0-1.1.46-2.1 1.2-2.84a3.76 3.76 0 010-2.93s.91-.28 3.11 1.1c1.8-.49 3.7-.49 5.5 0 2.1-1.38 3.02-1.1 3.02-1.1a3.76 3.76 0 010 2.93c.83.74 1.2 1.74 1.2 2.94 0 4.21-2.57 5.13-5.04 5.4.45.37.82.92.82 2.02v3.03c0 .27.1.64.73.55A11 11 0 0012 1.27"></path></svg></a></li>
+                <li><a href="/planck.js/search" title="Search" aria-label="Go To Search Page"><svg class="svg-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14"></path></svg></a></li>
+                <li><a id="theme-toggle" title="Theme" href="javascript:void(0);" aria-label="Toggle Website Theme"></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <article><h1 id="planckjs-vs-matterjs-key-structural-differences">Planck.js vs
+Matter.js: Key Structural Differences?</h1>
+<p>When developing 2D web games or physics simulations, choosing the
+right physics engine is critical for performance and ease of
+development. This article provides a structural comparison between
+<strong>planck.js</strong> and <strong>Matter.js</strong>, highlighting
+how their core architectures, rigid body definitions, collision handling
+systems, and rendering philosophies differ. While planck.js is a
+JavaScript port of the C++ Box2D engine optimized for deterministic,
+rigid simulations, Matter.js is a native JavaScript engine designed from
+the ground up for flexibility, web-standard features, and ease of
+use.</p>
+<h3 id="core-architecture-and-porting-philosophy">Core Architecture and
+Porting Philosophy</h3>
+<p>The most fundamental structural difference stems from how each
+library was built. Planck.js is a direct, rewrite-based port of
+<strong>Box2D</strong>, the industry-standard C++ physics engine.
+Because of this, planck.js inherits a highly structured, object-oriented
+C++ architecture adapted for JavaScript. It relies heavily on strict
+memory management principles, internal caching, and mathematical
+structures designed for deep simulation stability.</p>
+<p>Matter.js, on the other hand, is a <strong>native JavaScript</strong>
+physics engine. It was built specifically for the web ecosystem,
+utilizing a more idiomatic JavaScript approach. Its architecture is
+highly modular and relies on clean, decoupled modules (like
+<code>Matter.Engine</code>, <code>Matter.World</code>, and
+<code>Matter.Runner</code>) that interact through simple configuration
+objects.</p>
+<h3 id="rigid-body-definition-and-composition">Rigid Body Definition and
+Composition</h3>
+<p>The way bodies are structured and created in these two engines
+reflects their underlying design philosophies.</p>
+<ul>
+<li><strong>Planck.js (Box2D approach):</strong> It uses a separated
+structural pattern. To create a physical object, you must define a
+<code>Body</code> (which handles position, velocity, and forces) and
+independently attach one or more <code>Fixture</code> objects to it. The
+fixtures define the geometry (shapes like polygons or circles) and
+material properties (density, friction, restitution). This allows for
+complex, multi-fixture composite bodies but requires more boilerplate
+code.</li>
+<li><strong>Matter.js (Native JS approach):</strong> It unifies these
+concepts into a single <code>Matter.Body</code> object. When you create
+a body in Matter.js, its geometry, mass, friction, and bounce are all
+configured within a single aggregated object or through a simple factory
+method (e.g., <code>Bodies.rectangle</code>). Complex shapes are
+achieved by passing an array of vertices directly into the body creation
+step, or by using <code>Body.create</code> to combine multiple parts
+into a single hierarchy.</li>
+</ul>
+<h3 id="collision-detection-and-resolution-systems">Collision Detection
+and Resolution Systems</h3>
+<p>Under the hood, the mathematical and structural approaches to
+managing collisions diverge significantly:</p>
+<ul>
+<li><strong>Planck.js:</strong> It utilizes a highly optimized
+<strong>Continuous Collision Detection (CCD)</strong> system using a
+"Time of Impact" (TOI) algorithm. This structural feature prevents
+fast-moving objects from passing through other objects (tunneling). It
+also heavily relies on a dynamic AABB (Axis-Aligned Bounding Box) tree
+for efficient broad-phase collision filtering.</li>
+<li><strong>Matter.js:</strong> It primarily relies on <strong>Discrete
+Collision Detection</strong> using the Separating Axis Theorem (SAT).
+While Matter.js is highly performant for standard web games, it lacks
+built-in continuous collision detection out of the box, meaning
+fast-moving, incredibly thin objects can occasionally suffer from
+tunneling if the simulation engine's time step isn't manually adjusted
+or sub-stepped.</li>
+</ul>
+<h3 id="rendering-and-decoupling">Rendering and Decoupling</h3>
+<p>How the simulation interacts with what the user sees on the screen
+represents another major structural split.</p>
+<ul>
+<li><strong>Planck.js:</strong> It is completely decoupled from
+rendering by default. It focuses strictly on the mathematical simulation
+of physics. Developers must manually fetch the positions and angles of
+planck.js bodies in a game loop and map them to their own visual
+framework (such as Three.js, PixiJS, or a standard HTML5 Canvas).</li>
+<li><strong>Matter.js:</strong> It includes a built-in, lightweight
+canvas renderer (<code>Matter.Render</code>) and a primitive runner
+module (<code>Matter.Runner</code>) directly integrated into its
+ecosystem. While you can decouple Matter.js to use external renderers,
+its internal structure is purpose-built to allow developers to get a
+visual simulation running instantly with just a few lines of
+configuration.</li>
+</ul></article>
+        <div id=comments-container></div>
+
+        <script>
+            const utterancesScript = document.createElement('script');
+            
+            utterancesScript.setAttribute('src', 'https://utteranc.es/client.js');
+            utterancesScript.setAttribute('repo', 'salivity/planck.js'); 
+            utterancesScript.setAttribute('issue-term', 'pathname'); 
+            utterancesScript.setAttribute('theme', localStorage.getItem('theme') === 'dark' ? 'github-dark' : 'github-light'); 
+            utterancesScript.setAttribute('crossorigin', 'anonymous');
+            utterancesScript.async = true;
+
+            document.getElementById('comments-container').appendChild(utterancesScript);
+        </script>
+    
+    </main>
+    <footer>
+        <nav>
+            <ul class="footer-links">
+                <li><a href="/planck.js/privacy-policy">Privacy Policy</a></li>
+                <li><a href="/planck.js/terms-and-conditions">Terms and Conditions</a></li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            Copyright &copy; <span id="current-year"></span>
+        </div>
+    </footer>
+</body>
+</html>
