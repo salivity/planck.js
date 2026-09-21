@@ -1,0 +1,602 @@
+[
+  [
+    100,
+    "Where is the Planck.js Documentation and Repository?",
+    "Planck.js is a popular open-source 2D physics engine written in JavaScript and TypeScript, widely used for cross-platform HTML5 game development. This article outlines the exact resources developers need to access the official Planck.js documentation, br",
+    false
+  ],
+  [
+    99,
+    "How to Use Planck.js Friction Joints for Top-Down Physics",
+    "Building a top-down 2D physics environment requires simulating friction that acts on an object's entire surface area, unlike side-scrolling games where gravity pushes objects onto a platform. In planck.js (a JavaScript port of Box2D), this is efficiently",
+    false
+  ],
+  [
+    98,
+    "How to Object Pool planck.js Bodies?",
+    "Object pooling in planck.js—a 2D JavaScript physics engine based on Box2D—is a crucial optimization technique for maintaining a stable frame rate in physics-heavy games or simulations. Constantly creating and destroying rigid bodies triggers frequent",
+    false
+  ],
+  [
+    97,
+    "How to Move Characters with Planck.js Forces?",
+    "Using forces for character movement in planck.js (a 2D JavaScript physics engine based on Box2D) allows for realistic, momentum-based physics interactions, but it requires careful tuning to prevent characters from feeling \"floaty\" or sliding uncontrollab",
+    false
+  ],
+  [
+    96,
+    "What happens to planck.js position vectors with NaN?",
+    "Feeding NaN (Not-a-Number) values into a planck.js position vector breaks the underlying physics simulation, causing computational failures, invisible or disappearing bodies, and cascading errors across the physics world. This article explores how planck",
+    false
+  ],
+  [
+    95,
+    "How to Convert Radians to Degrees in Planck.js?",
+    "Planck.js, a 2D physics engine for JavaScript, calculates all angular rotations, velocities, and angles exclusively in radians. This article provides a quick overview of why Planck.js uses radians, demonstrates the mathematical formula required to conver",
+    false
+  ],
+  [
+    94,
+    "What is the Default Angle Unit in planck.js?",
+    "When developing 2D physics simulations for the web using planck.js—a 2D physics engine based on Box2D—understanding how it handles spatial and rotational measurements is crucial for accurate movement and rendering. This article explains the default u",
+    false
+  ],
+  [
+    93,
+    "How does planck.js manage broad-phase collisions?",
+    "Planck.js efficiently manages internal broad-phase collision detection by utilizing a dynamic AABB (Axis-Aligned Bounding Box) tree structure to minimize the number of expensive narrow-phase shape checks. As a 2D rigid-body physics engine ported from Box",
+    false
+  ],
+  [
+    92,
+    "Can you create a custom joint type in planck.js?",
+    "This article explores whether you can create a custom joint type within planck.js, a 2D JavaScript physics engine based on Box2D. We will examine the limitations of the framework regarding native joint extension, look at practical workarounds to achieve",
+    false
+  ],
+  [
+    91,
+    "How to Change Shape Size Dynamically in planck.js?",
+    "In planck.js (the 2-D physics engine for JavaScript games), shapes attached to rigid bodies are generally considered immutable once created. However, you can dynamically change the size or radius of a shape after it has been added to the simulation by di",
+    false
+  ],
+  [
+    90,
+    "How Do Too Many Fixtures Impact planck.js Body Performance?",
+    "In planck.js (the JavaScript rewriting of the Box2D physics engine), attaching an excessive number of fixtures to a single rigid body can severely degrade simulation performance. While grouping multiple shapes onto one body is a common technique for crea",
+    false
+  ],
+  [
+    89,
+    "How to Configure Planck.js Bullet Body for Precision?",
+    "This article provides a quick guide on configuring high-speed bodies in planck.js to prevent \"tunneling\"—a common physics engine glitch where fast-moving objects pass straight through static barriers. By leveraging continuous collision detection (CCD)",
+    false
+  ],
+  [
+    88,
+    "What Vector Math Functions Does Planck.js Provide?",
+    "Planck.js, a 2D physics engine rewritten in JavaScript for cross-platform games, provides a dedicated Vec2 class equipped with utility functions for essential 2D vector math manipulations. This article outlines the core methods available in Planck.js for",
+    false
+  ],
+  [
+    87,
+    "How to Stop planck.js Body Rotation?",
+    "In planck.js (the JavaScript port of the Box2D physics engine), you often need a rigid body that can move freely in the 2D plane but must remain perfectly upright or oriented in a fixed direction. This article provides a quick overview of how to lock a b",
+    false
+  ],
+  [
+    86,
+    "How Does Planck.js Calculate Polygon Center of Mass?",
+    "Planck.js—a 2D physics engine rewritten from Box2D in JavaScript—calculates the center of mass for irregular, rigid polygon shapes using geometric decomposition and a weighted average of individual triangular masses. Because rigid body simulations re",
+    false
+  ],
+  [
+    85,
+    "What Is the Role of Sweep in Planck.js?",
+    "This article provides a comprehensive overview of the sweep property within the transform mathematics of Planck.js, a 2D physics engine for JavaScript. We will explore how the engine utilizes the sweep structure to track a body's motion over time, handle",
+    false
+  ],
+  [
+    84,
+    "How to Apply Linear Impulse to Center of Mass in Planck.js?",
+    "Applying a linear impulse directly to the center of mass of a planck.js body changes its linear velocity without inducing any angular rotation (torque). This article provides a quick overview of how to calculate a body's center of mass, invoke the proper",
+    false
+  ],
+  [
+    83,
+    "Why Choose Planck.js Over P2.js for 2D Games?",
+    "Choosing the right 2D physics engine can significantly impact your game's performance, stability, and development speed. This article compares Planck.js and P2.js, highlighting why a developer might prefer Planck.js for their 2D game project. We will loo",
+    false
+  ],
+  [
+    82,
+    "Planck.js vs Matter.js: Key Structural Differences?",
+    "When developing 2D web games or physics simulations, choosing the right physics engine is critical for performance and ease of development. This article provides a structural comparison between planck.js and Matter.js, highlighting how their core archite",
+    false
+  ],
+  [
+    81,
+    "How to clone or serialize a Planck.js world state?",
+    "Planck.js does not feature built-in, native methods for deep cloning or serializing a world state out of the box. Because the underlying physics engine relies heavily on complex, interconnected object graphs and circular references—such as doubly linke",
+    false
+  ],
+  [
+    80,
+    "What tools and plugins exist for visual debugging in planck.js?",
+    "Visual debugging tools for planck.js—the pure JavaScript/TypeScript port of the Box2D physics engine—are essential for diagnosing complex rigid-body behaviors like clipping textures, misaligned hitboxes, and malfunctioning joints. Because planck.js h",
+    false
+  ],
+  [
+    79,
+    "How to Sync Planck.js State Between Server and Client?",
+    "Synchronizing a physics engine like Planck.js—a 2D JavaScript physics engine based on Box2D—between a multiplayer server and a client requires a robust architecture to prevent visual stuttering and gameplay desynchronization. Because real-time physic",
+    false
+  ],
+  [
+    78,
+    "Can Planck.js Run on Node.js for Multiplayer Physics?",
+    "This article explores whether Planck.js can be executed on a Node.js server to handle authoritative multiplayer physics. We will break down how Planck.js functions in a server-side environment, examine the architecture required for a server-authoritative",
+    false
+  ],
+  [
+    77,
+    "How to Create a One-Way Platform in Planck.js?",
+    "One-way platforms are a staple of 2D platformer games, allowing a player character to jump up from below a platform but stand firmly on top of it. In planck.js (the JavaScript rewrite of the Box2D physics engine), implementing this mechanic requires usin",
+    false
+  ],
+  [
+    76,
+    "What Happens When Disabling planck.js World Sleeping?",
+    "Disabling the global sleeping feature in a planck.js physics world forces the engine to continuously simulate and update every single body in the simulation, regardless of whether it is at rest. While this ensures immediate responsiveness to dynamic chan",
+    false
+  ],
+  [
+    75,
+    "How to Wake Up a Body in Planck.js?",
+    "Planck.js utilizes an automatic simulation feature called \"sleep\" to improve performance by excluding static or resting rigid bodies from physics calculations. However, there are scenarios where you need to manually intervene and force a sleeping body to",
+    false
+  ],
+  [
+    74,
+    "How to Optimize Planck.js with Sleeping Bodies",
+    "Planck.js, a 2D JavaScript physics engine rewritten from Box2D, relies on sleeping bodies to drastically reduce CPU overhead by excluding stationary objects from physics calculations. This article explores how the \"sleeping\" mechanism works, why it is vi",
+    false
+  ],
+  [
+    73,
+    "How to Optimize Performance in a Large planck.js World?",
+    "Simulating a large physics world in planck.js—a 2D JavaScript physics engine based on Box2D—can quickly become computationally expensive, leading to frame drops and sluggish performance. To maintain a smooth 60 FPS, developers must implement strategi",
+    false
+  ],
+  [
+    72,
+    "How to use fixed time-step in planck.js?",
+    "Implementing a fixed time-step with interpolation in planck.js ensures that your physics simulation runs at a consistent speed regardless of frame rate fluctuations, while maintaining butter-smooth visuals. This article covers why a fixed time-step is ne",
+    false
+  ],
+  [
+    71,
+    "Why Is planck.js Rendering Jittery and How to Fix It?",
+    "This article explores the common causes behind visual jitter and stuttering when rendering physics simulations using planck.js, a popular 2D JavaScript physics engine. We will examine why disparities between the physics engine's internal update loop and",
+    false
+  ],
+  [
+    70,
+    "How to Pause and Resume Planck.js Physics Loop?",
+    "This article provides a direct guide on how to pause and resume a physics simulation loop in Planck.js. You will learn how to manage the simulation's state by controlling the execution of the world stepping function, allowing you to implement pause menus",
+    false
+  ],
+  [
+    69,
+    "Is planck.js Deterministic Across JS Runtimes?",
+    "Planck.js, a 2D physics engine rewritten in JavaScript for cross-platform game development, is theoretically deterministic but frequently suffers from non-deterministic behavior when executed across different JavaScript runtimes. While the engine's core",
+    false
+  ],
+  [
+    68,
+    "How Does Planck.js Manage Memory Cleanup?",
+    "Planck.js, the 2-D JavaScript physics engine rewritten from Box2D, manages memory cleanup primarily through JavaScript's automatic garbage collection, supplemented by deliberate manual lifecycle management of its native-like data structures. Because rigi",
+    false
+  ],
+  [
+    67,
+    "How to Integrate Planck.js with Three.js?",
+    "Integrating a 2D physics engine like Planck.js (a JavaScript rewrite of Box2D) with a 3D WebGL renderer like Three.js is a powerful way to create performant 2D physics simulations, games, or interactive experiences with stunning 3D graphics. This guide o",
+    false
+  ],
+  [
+    66,
+    "How to Use Planck.js with HTML5 Canvas?",
+    "Planck.js is a 2D physics engine for JavaScript that allows developers to simulate realistic physics in the browser. While it handles all the complex mathematics behind movement, collisions, and forces, it does not include a built-in renderer. To bring y",
+    false
+  ],
+  [
+    65,
+    "What is the userData property in planck.js?",
+    "The userData property in planck.js (a 2D JavaScript physics engine based on Box2D) serves as a custom data container that allows developers to attach arbitrary application-specific information to physics bodies and fixtures. Because the physics engine on",
+    false
+  ],
+  [
+    64,
+    "How to Convert World to Local Vector in Planck.js?",
+    "Converting a world space vector to a body's local space vector is a common task in 2D physics engines like Planck.js (a JavaScript rewrite of Box2D). This article provides a straightforward guide on how to perform this coordinate transformation using Pla",
+    false
+  ],
+  [
+    63,
+    "How to Convert Local to World Point in Planck.js?",
+    "This article provides a straightforward guide on how to convert a local coordinate point within a rigid body to a global world coordinate point using the planck.js 2D physics engine. You will learn about the specific utility methods available on the Body",
+    false
+  ],
+  [
+    62,
+    "Difference Between Local and World Coordinates in Planck.js?",
+    "Understanding the distinction between local and world coordinates is essential for accurately positioning, moving, and managing collisions between rigid bodies in planck.js. While world coordinates define an absolute position within the entire 2D physics",
+    false
+  ],
+  [
+    61,
+    "How to Get Composite Body Mass in Planck.js",
+    "This article provides a straightforward guide on how to retrieve the total mass data of a composite body in planck.js. You will learn how to access the mass, center of mass, and rotational inertia of a body composed of multiple fixtures, along with a pra",
+    false
+  ],
+  [
+    60,
+    "How to Get Joints Connected to a Planck.js Body",
+    "This article provides a quick overview of how to access and iterate through the list of joints attached to a specific rigid body in planck.js, the 2D JavaScript physics engine based on Box2D. You will learn about the built-in methods available on the Bod",
+    false
+  ],
+  [
+    59,
+    "How to Iterate Through planck.js Bodies?",
+    "This article provides a straightforward guide on how to loop through all the active rigid bodies in a planck.js physics world. You will learn the standard method using the built-in linked list pointers (getBodyList() and getNext()), along with a practica",
+    false
+  ],
+  [
+    58,
+    "What Does AABB Mean in Planck.js Collision?",
+    "In 2D physics engines like planck.js (a JavaScript port of Box2D), AABB stands for Axis-Aligned Bounding Box. It is a fundamental geometric concept used to optimize collision detection by wrapping complex shapes—such as polygons or circles—inside a s",
+    false
+  ],
+  [
+    57,
+    "How to Query an AABB in Planck.js?",
+    "This article provides a practical guide on how to perform an Axis-Aligned Bounding Box (AABB) query in planck.js to find intersecting physics fixtures. We will cover the essential setup, the execution of the queryAABB method, and how to utilize the callb",
+    false
+  ],
+  [
+    56,
+    "What Information Does a planck.js Ray Cast Return?",
+    "In planck.js (the 2D JavaScript physics engine based on Box2D), performing a world ray cast requires providing a callback function. This callback executes every time the ray intersects a fixture in the physics world. Instead of returning a static object",
+    false
+  ],
+  [
+    55,
+    "How to Perform Ray Cast in Planck.js?",
+    "Ray casting is a powerful feature in planck.js (a 2D physics engine for JavaScript) that allows you to project a line segment through a physics world to detect any intersecting fixtures. This article provides a comprehensive guide on how to implement ray",
+    false
+  ],
+  [
+    54,
+    "How to Override Collision Filtering in Planck.js",
+    "Planck.js uses a robust filtering system to determine which objects in your 2D physics world should collide and which should pass through each other. While the standard approach relies on category and mask bits, the group index feature provides a powerfu",
+    false
+  ],
+  [
+    53,
+    "How do mask bits control planck.js fixture collisions?",
+    "In planck.js (a 2D JavaScript physics engine based on Box2D), mask bits act as a selective filter that determines which categories of objects a specific fixture is allowed to collide with. Every fixture is assigned a collision filter consisting of a cate",
+    false
+  ],
+  [
+    52,
+    "How to Configure Collision Filtering in Planck.js?",
+    "Planck.js, a 2D physics engine for JavaScript, allows developers to control which fixtures collide with each other using a system of category and mask bits. This article explains how to set up categoryBits to define an object's identity and maskBits to d",
+    false
+  ],
+  [
+    51,
+    "What is Tunneling in Planck.js and How is it Fixed?",
+    "In game development, fast-moving physics objects can sometimes pass completely through solid barriers, a glitch known as tunneling. This article provides a quick overview of why tunneling occurs in 2D physics engines and explores how planck.js—a popula",
+    false
+  ],
+  [
+    50,
+    "How does planck.js handle continuous collision detection?",
+    "Planck.js, a 2D rigid-body physics engine written in pure JavaScript, prevents fast-moving objects from tunneling through geometry by implementing a specialized Continuous Collision Detection (CCD) system based on the original C++ Box2D architecture. In",
+    false
+  ],
+  [
+    49,
+    "What analytics can you get from planck.js PostSolve?",
+    "The PostSolve event in planck.js provides crucial physics simulation data immediately after collision impulses are calculated and applied. By tapping into this event, developers can gather precise analytics on collision forces, friction impulses, and con",
+    false
+  ],
+  [
+    48,
+    "How to Disable Planck.js Collisions Dynamically?",
+    "Planck.js, a 2D JavaScript physics engine based on Box2D, allows developers to alter contact behavior in real time during a physics step. By tapping into the PreSolve event listener, you can intercept a collision right before it is calculated by the phys",
+    false
+  ],
+  [
+    47,
+    "What Info is in the planck.js EndContact Event?",
+    "In planck.js—a 2D physics engine for JavaScript games and simulations—the EndContact event is triggered immediately after two fixtures stop touching. This article provides a quick breakdown of the specific information you can extract from this event,",
+    false
+  ],
+  [
+    46,
+    "How to Use BeginContact in Planck.js?",
+    "This article provides a practical guide on how to utilize the BeginContact event in planck.js to detect the exact moment two fixtures start colliding. You will learn how to set up a contact listener, access the fixtures involved in the collision, and imp",
+    false
+  ],
+  [
+    45,
+    "Why Use the Contact Listener in Planck.js?",
+    "In Planck.js—the JavaScript rewrite of the Box2D physics engine—the contact listener interface is the primary mechanism for detecting and responding to collisions between rigid bodies. By implementing a custom contact listener, developers can interce",
+    false
+  ],
+  [
+    44,
+    "How to Safely Destroy a Joint in Planck.js?",
+    "In Planck.js simulations, destroying a joint safely requires breaking its physical connection without disrupting the simulation's stability or causing null pointer exceptions. This article provides a straightforward guide on how to identify, disconnect,",
+    false
+  ],
+  [
+    43,
+    "How to Destroy a Body in Planck.js?",
+    "Planck.js, a JavaScript rewriting of the Box2D physics engine, provides a specific lifecycle management system for rigid bodies to maintain performance and simulation accuracy. To completely remove a body from the simulation physics world, developers mus",
+    false
+  ],
+  [
+    42,
+    "How to Enable Joint Motor and Set Torque in Planck.js?",
+    "Planck.js, a 2D physics engine rewritten in JavaScript for cross-platform games and simulations, allows developers to dynamically control physics joints using built-in motors. This article provides a straightforward guide on how to enable a joint motor a",
+    false
+  ],
+  [
+    41,
+    "How to Enable Joint Limits in Planck.js?",
+    "Planck.js, a 2D JavaScript physics engine rewritten from Box2D, allows developers to restrict the range of motion for physics bodies using joint limits. By configuring constraints on specific joints—most commonly RevoluteJoint and PrismaticJoint—you",
+    false
+  ],
+  [
+    40,
+    "What Is the Purpose of a Motor Joint in Planck.js?",
+    "A motor joint in planck.js—a 2D physics engine for JavaScript games and simulations—is used to control the relative motion between two rigid bodies by applying linear and angular forces. Unlike other joints that rigidly constrain movement or simulate",
+    false
+  ],
+  [
+    39,
+    "How does Friction Joint work in planck.js?",
+    "In 2D physics simulations using planck.js, a Friction Joint is used to reduce both relative linear and angular motion between two rigid bodies by simulating friction forces. This article explores how this joint operates, its key properties like maximum f",
+    false
+  ],
+  [
+    38,
+    "When to Use a Weld Joint in Planck.js?",
+    "In 2D physics simulation using planck.js (the JavaScript rewriting of Box2D), developers use a Weld Joint to rigidly bind two rigid bodies together, preventing them from moving or rotating independently. This article explores the specific scenarios where",
+    false
+  ],
+  [
+    37,
+    "What is the Function of a Wheel Joint in Planck.js?",
+    "Planck.js, a 2D physics engine for JavaScript, utilizes a specialized Wheel Joint to simulate the suspension and rotational behavior of vehicle wheels. This article explains how the wheel joint combines translational and rotational freedom to mimic real-",
+    false
+  ],
+  [
+    36,
+    "How to Implement a Mouse Joint in Planck.js?",
+    "This article provides a step-by-step guide on how to implement a Mouse Joint in planck.js, a 2D physics engine for JavaScript. You will learn how to set up the joint, update its target position based on user input (like mouse or touch movements), and pro",
+    false
+  ],
+  [
+    35,
+    "What Is the Purpose of a Gear Joint in Planck.js?",
+    "In planck.js (the JavaScript rewrite of the Box2D physics engine), a Gear Joint is a specialized joint used to couple the movement of two other joints—specifically Revolute or Prismatic joints. By linking these joints, a Gear Joint enforces a strict co",
+    false
+  ],
+  [
+    34,
+    "How to Simulate Pulley Joints in planck.js?",
+    "This article provides a comprehensive guide on how to implement and simulate a pulley joint using planck.js, the 2D physics engine for JavaScript applications. You will learn the core mechanics of how a pulley joint operates, how it calculates and simula",
+    false
+  ],
+  [
+    33,
+    "What Parameters Are Required for a planck.js Prismatic Joint?",
+    "Setting up a Prismatic Joint in planck.js requires defining a specific set of parameters and configuration properties to constrain two rigid bodies to move along a single linear axis of translation without rotating relative to each other. This article pr",
+    false
+  ],
+  [
+    32,
+    "How to Configure a Revolute Joint in Planck.js?",
+    "A Revolute Joint in planck.js (the JavaScript rewrite of the Box2D physics engine) constrains two rigid bodies to share a common anchor point, allowing them to rotate relative to each other like a hinge. To configure it properly, you need to define the t",
+    false
+  ],
+  [
+    31,
+    "What is a Distance Joint in planck.js?",
+    "This article provides a comprehensive overview of the distance joint in planck.js, a 2D JavaScript physics engine based on Box2D. We will explore its core purpose, how it constrains the motion between two rigid bodies, its primary configuration propertie",
+    false
+  ],
+  [
+    30,
+    "How Does Angular Damping Prevent Indefinite Rotation in Planck.js?",
+    "This article provides an overview of how angular damping functions within planck.js—a 2D JavaScript physics engine based on Box2D—to control and reduce a rigid body's rotational velocity over time. You will learn the underlying mathematical concept b",
+    false
+  ],
+  [
+    29,
+    "What Is Linear Damping in Planck.js?",
+    "Linear damping is a crucial property in the planck.js 2D physics engine that simulates fluid resistance, gradually slowing down a moving body over time. Unlike friction, which requires contact with another surface, linear damping acts as an omnipresent d",
+    false
+  ],
+  [
+    28,
+    "How to Change Angular Velocity in Planck.js?",
+    "Planck.js is a 2D physics engine for JavaScript applications, refactored from Box2D for cross-platform optimization. To change the angular velocity of a rigid body within this engine, developers can directly manipulate the body's properties using the set",
+    false
+  ],
+  [
+    27,
+    "How to Set Linear Velocity in Planck.js?",
+    "Planck.js is a 2D physics engine for JavaScript (a rewrite of Box2D) where moving objects are represented as bodies. To manually set the speed and direction of a body without relying purely on environmental forces like gravity or collisions, you must dir",
+    false
+  ],
+  [
+    26,
+    "How to Apply Torque in Planck.js?",
+    "This article provides a quick overview and practical guide on how to apply torque to a rotating rigid body within the planck.js physics engine. You will learn the specific method used to inject rotational force, understand how it differs from applying di",
+    false
+  ],
+  [
+    25,
+    "Difference Between Force and Impulse in Planck.js?",
+    "In planck.js (a 2D JavaScript physics engine based on Box2D), manipulating rigid bodies often comes down to choosing between forces and impulses. While both methods alter an object's motion, they do so over entirely different timescales: applying a force",
+    false
+  ],
+  [
+    24,
+    "How to Apply Continuous Force in Planck.js?",
+    "Planck.js is a 2D physics engine for JavaScript cross-compiled from Box2D, often used for games and simulations. Applying a continuous force to a body requires using the applyForce or applyForceToCenter methods inside the simulation's update loop. This a",
+    false
+  ],
+  [
+    23,
+    "What is a sensor fixture in planck.js?",
+    "This article provides a comprehensive overview of sensor fixtures in planck.js, a 2D physics engine for JavaScript. It explains what a sensor fixture is, how it differs from standard solid fixtures, and the precise mechanism it uses to detect overlaps be",
+    false
+  ],
+  [
+    22,
+    "How Does Restitution Control Bounciness in Planck.js?",
+    "In Planck.js—a 2D JavaScript physics engine based on Box2D—the restitution property directly determines the elasticity, or \"bounciness,\" of a rigid body during a collision. This article explores how restitution dictates kinetic energy retention, how",
+    false
+  ],
+  [
+    21,
+    "How Does Friction Affect Contacting Surfaces in Planck.js?",
+    "This article provides a quick overview of how friction operates between contacting surfaces in Planck.js, a 2D physics engine for JavaScript games. It explains the mechanics behind friction simulation, how friction coefficients are calculated and combine",
+    false
+  ],
+  [
+    20,
+    "How to Set Fixture Density in Planck.js",
+    "This article provides a straightforward guide on how to configure the density of a fixture in planck.js, a 2D JavaScript physics engine based on Box2D. You will learn how to define density during fixture creation using a fixture definition, how to adjust",
+    false
+  ],
+  [
+    19,
+    "What is a Chain Shape in Planck.js?",
+    "This article provides an overview of the chain shape in Planck.js, a 2D physics engine for JavaScript. It covers what a chain shape is, its key characteristics, and the specific scenarios where you should use it instead of other shape types like polygons",
+    false
+  ],
+  [
+    18,
+    "How does planck.js handle edge shapes?",
+    "Planck.js, a 2D JavaScript physics engine rewritten from LiquidFun/Box2D, handles terrain generation primarily through the use of Edge and Chain shapes. Unlike closed polygons, edge shapes are line segments designed specifically to represent static, holl",
+    false
+  ],
+  [
+    17,
+    "Max Vertex Limit for Polygons in Planck.js",
+    "This article provides a direct overview of the vertex limitations when creating polygon shapes in planck.js, a 2D JavaScript physics engine based on Box2D. We will explore the default hardcoded limits, the reasoning behind these constraints, and how you",
+    false
+  ],
+  [
+    16,
+    "How to Create a Circle in Planck.js?",
+    "Planck.js is a 2D physics engine for JavaScript cross-platform development, rewritten from Box2D. Creating a circle shape involves defining a world, creating a body within that world, and attaching a circle shape fixture to it. This article will guide yo",
+    false
+  ],
+  [
+    15,
+    "What is the Role of a Shape in a Planck.js Fixture?",
+    "In Planck.js (a 2D physics engine for JavaScript), a shape defines the geometric boundary and collision volume of a fixture, directly influencing how rigid bodies interact, collide, and handle physical forces. While a Body provides the core physics prope",
+    false
+  ],
+  [
+    14,
+    "How to Attach a Fixture to a Body in planck.js?",
+    "In planck.js (the JavaScript rewriting of the Box2D physics engine), attaching a fixture to a rigid body requires creating a body definition, instantiating the body within the world, defining a geometric shape, and finally binding that shape to the body",
+    false
+  ],
+  [
+    13,
+    "Why Are Position Iterations Important in Planck.js?",
+    "This article provides an overview of the role that position iterations play within the world.step() function of Planck.js, a 2D physics engine for JavaScript. It explains how these iterations prevent rigid bodies from overlapping, correct positional drif",
+    false
+  ],
+  [
+    12,
+    "Why Do Velocity Iterations Matter in planck.js?",
+    "This article explores the critical role of velocity iterations during a planck.js world step, explaining how they calculate object movements, resolve collisions, and impact both physics accuracy and CPU performance. --- In planck.js (a JavaScript 2D phys",
+    false
+  ],
+  [
+    11,
+    "How to Step the Physics World in planck.js?",
+    "Advancing the physics simulation time step in planck.js requires calling the world.step() method within a continuous game or animation loop. This article explains how to configure the time step, manage velocity and position iterations for precision, and",
+    false
+  ],
+  [
+    10,
+    "What scale factor to use for pixels to meters in planck.js?",
+    "When developing 2D physics games using planck.js (a JavaScript port of Box2D), translating screen pixels to physics meters requires a recommended scale factor of 30 pixels per meter. Because planck.js is optimized to handle objects between 0.1 and 10 met",
+    false
+  ],
+  [
+    9,
+    "How to Set Gravity in Planck.js?",
+    "This article provides a quick overview and practical guide on how to define the gravity vector in a planck.js world. You will learn the syntax for initializing gravity during world creation, how to alter it dynamically during runtime, and how to manipula",
+    false
+  ],
+  [
+    8,
+    "When to Use a Kinematic Body in Planck.js?",
+    "In game development using Planck.js (a 2D physics engine for JavaScript), choosing the right body type is crucial for performance and gameplay mechanics. This article provides a quick overview of when to use a kinematic body instead of static or dynamic",
+    false
+  ],
+  [
+    7,
+    "What Is the Purpose of a Static Body in Planck.js?",
+    "Planck.js is a 2D physics engine written in JavaScript for cross-platform game development, translating the classic Box2D engine into the web ecosystem. In any physics simulation, managing how objects interact, move, and react to forces is critical. This",
+    false
+  ],
+  [
+    6,
+    "How do dynamic bodies behave in planck.js?",
+    "In a planck.js simulation, a dynamic body is a fully simulated rigid body that reacts to external forces, gravity, and collisions with other objects. Unlike static or kinematic bodies, dynamic bodies possess mass and rotational inertia, allowing them to",
+    false
+  ],
+  [
+    5,
+    "What Are the Three Main Types of Bodies Available in planck.js?",
+    "Planck.js, a popular 2D JavaScript physics engine ported from Box2D, provides three main body types to define how objects move and interact within a simulated physics world: static, kinematic, and dynamic. Choosing the correct body type for each object i",
+    false
+  ],
+  [
+    4,
+    "How do you initialize a new physics world in planck.js?",
+    "Initializing a new physics world in planck.js is the foundational step for managing physical bodies, joints, and real-time simulation in your 2D JavaScript games. By instantiating a central world container and defining a custom gravity vector, you establ",
+    false
+  ],
+  [
+    3,
+    "What Programming Language Is Planck.js Written In?",
+    "Planck.js is a popular 2D physics engine used by web developers to create realistic simulations, games, and interactive animations directly in the browser. This article provides a quick overview of the core programming language behind Planck.js, its arch",
+    false
+  ],
+  [
+    2,
+    "How Does Planck.js Differ From Box2D?",
+    "Planck.js is a 2D physics engine written in JavaScript specifically optimized for web browsers and Node.js environments. It is a direct, rewrite-based port of the industry-standard Box2D engine, which was originally authored by Erin Catto in C++. While P",
+    false
+  ],
+  [
+    1,
+    "What is the Purpose of Planck.js in Game Development?",
+    "Planck.js is an open-source, 2D physics engine written in JavaScript and TypeScript, designed specifically for web and game development. It serves as a direct, rewritten port of the famous Box2D physics engine, optimized to run seamlessly in modern web b",
+    false
+  ]
+]
